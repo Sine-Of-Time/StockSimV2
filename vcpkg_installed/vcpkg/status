@@ -1,0 +1,240 @@
+Package: vcpkg-cmake-config
+Version: 2024-05-23
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 4b3672040c0d812ea023dcfc2801d8a70c52d086f4234e4ba4a50c28407bc2c8
+Status: install ok installed
+
+Package: vcpkg-cmake
+Version: 2024-04-23
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 07671e7c644e75c27e0ffa2225bf65f54ef815c9cdc1559bb73c2377feeacc08
+Status: install ok installed
+
+Package: fmt
+Version: 11.0.2
+Port-Version: 1
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 8b8ca8ba17a86d6ce93c4a3c5d6dc6e26e3e2df958072f376fa56b10104c7721
+Description: {fmt} is an open-source formatting library providing a fast and safe alternative to C stdio and C++ iostreams.
+Status: purge ok not-installed
+
+Package: zlib
+Version: 1.3.1
+Depends: vcpkg-cmake
+Architecture: x64-windows
+Multi-Arch: same
+Abi: e6695a768c93fe80a62d80a99d4a55d3386760af83d5ab507aa6331434017aac
+Description: A compression library
+Status: install ok installed
+
+Package: curl
+Version: 8.11.1
+Depends: vcpkg-cmake, vcpkg-cmake-config, zlib
+Architecture: x64-windows
+Multi-Arch: same
+Abi: f06f58fa2fcb3db24eeeca3c7e7d298259051ce5870fff57b036ae7aea6066c1
+Description: A library for transferring data with URLs
+Default-Features: non-http, ssl
+Status: install ok installed
+
+Package: curl
+Feature: non-http
+Architecture: x64-windows
+Multi-Arch: same
+Description: Enables protocols beyond HTTP/HTTPS/HTTP2
+Status: install ok installed
+
+Package: curl
+Feature: schannel
+Depends: curl
+Architecture: x64-windows
+Multi-Arch: same
+Description: SSL support (Secure Channel)
+Status: install ok installed
+
+Package: curl
+Feature: ssl
+Depends: curl
+Architecture: x64-windows
+Multi-Arch: same
+Description: Default SSL backend
+Status: install ok installed
+
+Package: curl
+Feature: sspi
+Architecture: x64-windows
+Multi-Arch: same
+Description: SSPI support
+Status: install ok installed
+
+Package: jsoncpp
+Version: 1.9.6
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 0fbead9bed5a776a43ad89f6e5b91782eeb4263e8f3791ad04125a390b5ce74f
+Description: JsonCpp is a C++ library that allows manipulating JSON values, including serialization and deserialization to and from strings. It can also preserve existing comment in unserialization/serialization steps, making it a convenient format to store user input files.
+Status: install ok installed
+
+Package: liblzma
+Version: 5.6.3
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 6a62da5f842a2c841d2d83324a787c8627faa750eff5c68520ca5308568f45ad
+Description: Compression library with an API similar to that of zlib.
+Status: purge ok not-installed
+
+Package: libjpeg-turbo
+Version: 3.1.0
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 778bc10f1a4c5ed4d19a82f453eaeb635e07711a522e419bd8d23d763033c4ad
+Description: libjpeg-turbo is a JPEG image codec that uses SIMD instructions (MMX, SSE2, NEON, AltiVec) to accelerate baseline JPEG compression and decompression on x86, x86-64, ARM, and PowerPC systems.
+Status: purge ok not-installed
+
+Package: tiff
+Version: 4.7.0
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 1e82f3cd2edc47ef6133b59bb8f2aeba216bf976dea9291ccb32a7a978cd3335
+Description: A library that supports the manipulation of TIFF image files
+Default-Features: jpeg, lzma, zip
+Status: purge ok not-installed
+
+Package: tiff
+Feature: jpeg
+Depends: libjpeg-turbo
+Architecture: x64-windows
+Multi-Arch: same
+Description: Support JPEG compression in TIFF image files
+Status: purge ok not-installed
+
+Package: tiff
+Feature: lzma
+Depends: liblzma
+Architecture: x64-windows
+Multi-Arch: same
+Description: Support LZMA compression in TIFF image files
+Status: purge ok not-installed
+
+Package: tiff
+Feature: zip
+Depends: zlib
+Architecture: x64-windows
+Multi-Arch: same
+Description: Support ZIP/deflate compression in TIFF image files
+Status: purge ok not-installed
+
+Package: pcre2
+Version: 10.43
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 836afb23c2825a663dfe4d0eac3ff71b1fb77e3b9cf4603200568854d38baf3f
+Description: Regular Expression pattern matching using the same syntax and semantics as Perl 5.
+Default-Features: platform-default-features
+Status: purge ok not-installed
+
+Package: pcre2
+Feature: jit
+Architecture: x64-windows
+Multi-Arch: same
+Description: Enable support for Just-In-Time compiling regex matchers
+Status: purge ok not-installed
+
+Package: pcre2
+Feature: platform-default-features
+Depends: pcre2
+Architecture: x64-windows
+Multi-Arch: same
+Description: Enable default features
+Status: purge ok not-installed
+
+Package: egl-registry
+Version: 2024-01-25
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 1ea3e72b44a38904bd92644bac765bb93418ae7c6beadbf60ded7cb4416691df
+Description: EGL API and Extension Registry
+Status: purge ok not-installed
+
+Package: opengl-registry
+Version: 2024-02-10
+Port-Version: 1
+Depends: egl-registry
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 3ea4b6cbeb0ecf8f7f0bf9dc343b2690e3cc6611590e2276feb7dac9e250dc69
+Description: OpenGL, OpenGL ES, and OpenGL ES-SC API and Extension Registry
+Status: purge ok not-installed
+
+Package: opengl
+Version: 2022-12-04
+Port-Version: 3
+Depends: opengl-registry
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 79f0480cf721f0334e568f513a50331360967cf4bb4c8d92e0c6deef3f1103cb
+Description: Open Graphics Library (OpenGL)[3][4][5] is a cross-language, cross-platform application programming interface (API) for rendering 2D and 3D vector graphics.
+Status: purge ok not-installed
+
+Package: nanosvg
+Version: 2023-12-29
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 4b1c7d28cf449f800e134aa79c1e75c3d1706edd682c94fa998e641e0fce1839
+Description: NanoSVG is a simple stupid single-header-file SVG parser. It is accompanied by a simple SVG rasterizer.
+Status: purge ok not-installed
+
+Package: libpng
+Version: 1.6.44
+Depends: vcpkg-cmake, vcpkg-cmake-config, zlib
+Architecture: x64-windows
+Multi-Arch: same
+Abi: e2ee36036055380a4b37b26f665881ebd64876b616f0ce993e759e36d3dabf58
+Description: libpng is a library implementing an interface for reading and writing PNG (Portable Network Graphics) format files
+Status: purge ok not-installed
+
+Package: expat
+Version: 2.6.4
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 40be68b976560c32d47c5740e41d3f2f15ad5a862d5a456034549335a32ee4ce
+Description: XML parser library written in C
+Status: purge ok not-installed
+
+Package: wxwidgets
+Version: 3.2.6
+Depends: expat, libjpeg-turbo, libpng, nanosvg, opengl, pcre2, tiff, vcpkg-cmake, vcpkg-cmake-config, zlib
+Architecture: x64-windows
+Multi-Arch: same
+Abi: a591351c0bfca306b263fac11180332edab26157ee6d5ac45130016675982781
+Description: Widget toolkit and tools library for creating graphical user interfaces (GUIs) for cross-platform applications.
+    Set WXWIDGETS_USE_STL in a custom triplet to build with the wxUSE_STL build option.
+    Set WXWIDGETS_USE_STD_CONTAINERS in a custom triplet to build with the wxUSE_STD_CONTAINERS build option.
+Default-Features: debug-support, sound
+Status: purge ok not-installed
+
+Package: wxwidgets
+Feature: debug-support
+Architecture: x64-windows
+Multi-Arch: same
+Description: Enable wxWidgets debugging support hooks even for release builds (wxDEBUG_LEVEL 1)
+Status: purge ok not-installed
+
+Package: wxwidgets
+Feature: sound
+Architecture: x64-windows
+Multi-Arch: same
+Description: Build wxSound support
+Status: purge ok not-installed
+
