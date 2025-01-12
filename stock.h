@@ -2,7 +2,7 @@
 #define STOCK_H
 
 #include <string>
-using namespace std;
+//using namespace std;
 
 class Stock {
 private:

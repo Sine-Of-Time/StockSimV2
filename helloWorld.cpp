@@ -4,7 +4,7 @@
 #include "curl_function.h"
 
 
-using namespace std;
+//using namespace std;
 
 int main() {
     std::string ticker_symbol = "AA"; // Example ticker symbol
@@ -13,13 +13,13 @@ int main() {
 
     if (!stockData.isNull()) {
         // Extract variables from the JSON object
-        string companyName = stockData.get("name", "Unknown").asString();
-        string volume = stockData.get("average_volume", 0).asString();
-        string ticker = stockData.get("symbol", "Unknown").asString();
+        std::string companyName = stockData.get("name", "Unknown").asString();
+        std::string volume = stockData.get("average_volume", 0).asString();
+        std::string ticker = stockData.get("symbol", "Unknown").asString();
         int64_t timestamp = stockData.get("timestamp", "Unknown").asInt64();
-        string  value = stockData.get("open", 0.0).asString();
-        string  change = stockData.get("change", 0.0).asString();
-        string  previousClose = stockData.get("previous_close", 0.0).asString();
+        std::string  value = stockData.get("open", 0.0).asString();
+        std::string  change = stockData.get("change", 0.0).asString();
+        std::string  previousClose = stockData.get("previous_close", 0.0).asString();
 
         // Print the extracted variables
         std::cout << "Stock Data for " << ticker_symbol << ":\n";
