@@ -6,7 +6,7 @@
 #include <json/json.h> // Include JSONCPP header
 #include <unordered_map>
 
-//using namespace std;
+using namespace std;
 // Constructor
 Company::Company(const std::string& name, const std::string& tickerSymbol, const std::unordered_map<std::string, Stock>& stockMap)
     : companyName(name), ticker(tickerSymbol) {
