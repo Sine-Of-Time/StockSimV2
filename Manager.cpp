@@ -4,9 +4,10 @@
 #include <cstring> // For std::memcpy
 #include <curl/curl.h>
 #include <json/json.h> // Include JSONCPP header
-#include <unordered_map>
-#include <stack>
+#include <string>
+#include <vector>
 #include <iostream>
+#include <algorithm>
 
 // Constructor
 Manager::Manager() {
@@ -51,6 +52,8 @@ Stock Manager::initStock(const std::string ticker) const {
     );
     return newStock;
 }
+
+
 
 // Destructor
 Manager::~Manager() {}

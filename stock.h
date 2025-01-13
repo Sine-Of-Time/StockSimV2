@@ -18,7 +18,7 @@ private:
     bool up;
 
 
-    void getHistory();
+    void setHistory();
 
 public:
     // Constructor
@@ -39,6 +39,7 @@ public:
     std::string getValue() const;
     std::string getChange() const;
     std::string getPreviousClose() const;
+    std::vector<double> getHistory();
 
     // Setters
     void setVolume(const std::string& newVolume);

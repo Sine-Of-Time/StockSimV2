@@ -10,7 +10,7 @@ Stock::Stock(const std::string& volume, const std::string& companyName, const st
     const std::string& previousClose, bool up)
     : volume(volume), companyName(companyName), ticker(ticker), timestamp(timestamp),
     value(value), change(change), previousClose(previousClose), up(up) {
-        getHistory();
+        setHistory();
     }
 
 // Display data
@@ -54,7 +54,11 @@ std::string Stock::getPreviousClose() const {
     return previousClose;
 }
 
-void Stock::getHistory() {
+std::vector<double> Stock::getHistory() {
+    return  history;
+}
+
+void Stock::setHistory() {
     history = get_stock_prices(ticker);
 }
 
