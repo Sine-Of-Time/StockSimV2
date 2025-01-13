@@ -16,9 +16,10 @@ private:
     std::string previousClose;
     std::vector<double> history;
     bool up;
-
+    int issuedQuantity; // New data member
 
     void setHistory();
+    void increaseIssuedQuantityBy(int increase);
 
 public:
     // Constructor
@@ -29,7 +30,8 @@ public:
         const std::string& value = "0.0",
         const std::string& change = "0.0",
         const std::string& previousClose = "0.0",
-        bool up = false);
+        bool up = false,
+        int issuedQuantity = 0); // Updated constructor
 
     // Getters
     std::string getVolume() const;
@@ -40,6 +42,7 @@ public:
     std::string getChange() const;
     std::string getPreviousClose() const;
     std::vector<double> getHistory();
+    int getIssuedQuantity() const; // New getter
 
     // Setters
     void setVolume(const std::string& newVolume);
@@ -49,14 +52,12 @@ public:
     void setValue(const std::string& newValue);
     void setChange(const std::string& newChange);
     void setPreviousClose(const std::string& newPreviousClose);
-
-    // Pure virtual function for update (to be implemented by derived classes)
-   // virtual void update() = 0;
+    void setIssuedQuantity(int newIssuedQuantity); // New setter
 
     // Display data
     void displayData();
     void displayGraph();
-   
+
     // Virtual destructor
     virtual ~Stock() {}
 };

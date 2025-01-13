@@ -1,32 +1,38 @@
-// user.cpp
-#include "user.h"
+// user.h
+#ifndef USER_H
+#define USER_H
 
-// Constructor
-User::User(const std::string& username, int networth) : username(username), networth(networth) {}
+#include <string>
+#include <unordered_map>
+#include "stock.h"
 
-// Getters
-std::string User::getUsername() const {
-    return username;
-}
+class User {
+private:
+    std::string username;
+    std::unordered_map<std::string, Stock> portfolio;
+    int balance;
+    int networth;
 
-int User::getNetworth() const {
-    return networth;
-}
+public:
+    // Constructor
+    User(const std::string& username = "", int networth = 0);
 
-// Setters
-void User::setUsername(const std::string& username) {
-    this->username = username;
-}
+    // Getters
+    std::string getUsername() const;
+    int getNetworth() const;
+    int getBalance() const; // Getter for balance
 
-void User::setNetworth(int networth) {
-    this->networth = networth;
-}
+    // Setters
+    void setUsername(const std::string& username);
+    void setNetworth(int networth);
+    void setBalance(int balance); // Setter for balance
 
-// Placeholder functions
-void User::buyStock() {
-    // To be implemented
-}
+    // Function to get a stock based on a ticker
+    Stock getStockByTicker(const std::string& ticker) const;
 
-void User::sellStock() {
-    // To be implemented
-}
+    // Placeholder functions
+    void buyStock();
+    void sellStock();
+};
+
+#endif // USER_H

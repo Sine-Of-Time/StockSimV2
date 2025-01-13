@@ -1,32 +1,52 @@
-// user.h
-#ifndef USER_H
-#define USER_H
-
+#include "user.h"
 #include <string>
 #include <unordered_map>
+#include "stock.h"
+#include <stdexcept>
 
-class User {
-private:
-    std::string username;
-    //std::unordered_map<std::string, Stock> portfolio;
-    int balance;
-    int networth;
+// Constructor
+User::User(const std::string& username, int networth) : username(username), networth(networth), balance(0) {}
 
-public:
-    // Constructor
-    User(const std::string& username = "", int networth = 0);
+// Getters
+std::string User::getUsername() const {
+    return username;
+}
 
-    // Getters
-    std::string getUsername() const;
-    int getNetworth() const;
+int User::getNetworth() const {
+    return networth;
+}
 
-    // Setters
-    void setUsername(const std::string& username);
-    void setNetworth(int networth);
+int User::getBalance() const {
+    return balance;
+}
 
-    // Placeholder functions
-    void buyStock();
-    void sellStock();
-};
+// Setters
+void User::setUsername(const std::string& username) {
+    this->username = username;
+}
 
-#endif // USER_H
+void User::setNetworth(int networth) {
+    this->networth = networth;
+}
+
+void User::setBalance(int balance) {
+    this->balance = balance;
+}
+
+//Change this implementation -1/13/24
+Stock User::getStockByTicker(const std::string& ticker) const {
+    auto it = portfolio.find(ticker);
+    if (it != portfolio.end()) {
+        return it->second;
+    }
+    throw std::runtime_error("Stock with ticker " + ticker + " not found in portfolio.");
+}
+
+// Placeholder functions
+void User::buyStock() {
+    // To be implemented
+}
+
+void User::sellStock() {
+    // To be implemented
+}

@@ -3,16 +3,15 @@
 #include <vector>
 #include <iomanip>
 #include <iostream> // For std::cout and std::endl
-//using namespace std;
 
 // Constructor
 Stock::Stock(const std::string& volume, const std::string& companyName, const std::string& ticker,
     int64_t timestamp, const std::string& value, const std::string& change,
-    const std::string& previousClose, bool up)
+    const std::string& previousClose, bool up, int issuedQuantity)
     : volume(volume), companyName(companyName), ticker(ticker), timestamp(timestamp),
-    value(value), change(change), previousClose(previousClose), up(up) {
-        setHistory();
-    }
+    value(value), change(change), previousClose(previousClose), up(up), issuedQuantity(issuedQuantity) {
+    setHistory();
+}
 
 // Display data
 void Stock::displayData() {
@@ -24,6 +23,7 @@ void Stock::displayData() {
     std::cout << "Change: " << change << std::endl;
     std::cout << "Previous Close: " << previousClose << std::endl;
     std::cout << "Volume: " << volume << std::endl;
+    std::cout << "Issued Quantity: " << issuedQuantity << std::endl;
 }
 
 void Stock::displayGraph() {
@@ -88,6 +88,10 @@ void Stock::displayGraph() {
     std::cout << "\n";
 }
 
+void Stock::increaseIssuedQuantityBy(int increase) {
+    issuedQuantity = issuedQuantity + increase;
+}
+
 // Getters
 std::string Stock::getVolume() const {
     return volume;
@@ -117,8 +121,12 @@ std::string Stock::getPreviousClose() const {
     return previousClose;
 }
 
+int Stock::getIssuedQuantity() const {
+    return issuedQuantity;
+}
+
 std::vector<double> Stock::getHistory() {
-    return  history;
+    return history;
 }
 
 void Stock::setHistory() {
@@ -152,4 +160,8 @@ void Stock::setChange(const std::string& newChange) {
 
 void Stock::setPreviousClose(const std::string& newPreviousClose) {
     previousClose = newPreviousClose;
+}
+
+void Stock::setIssuedQuantity(int newIssuedQuantity) {
+    issuedQuantity = newIssuedQuantity;
 }
