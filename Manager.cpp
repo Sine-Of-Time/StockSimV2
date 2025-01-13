@@ -55,6 +55,8 @@ Stock Manager::initStock(const std::string ticker) const {
 
 
 
+
+
 // Destructor
 Manager::~Manager() {}
 

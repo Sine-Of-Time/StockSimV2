@@ -55,6 +55,7 @@ public:
 
     // Display data
     void displayData();
+    void displayGraph();
    
     // Virtual destructor
     virtual ~Stock() {}

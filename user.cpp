@@ -9,6 +9,7 @@ class User {
 private:
     std::string username;
     //std::unordered_map<std::string, Stock> portfolio;
+    int balance;
     int networth;
 
 public:

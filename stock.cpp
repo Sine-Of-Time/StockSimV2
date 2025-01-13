@@ -1,6 +1,7 @@
 #include "stock.h"
 #include "curl_function.h"
 #include <vector>
+#include <iomanip>
 #include <iostream> // For std::cout and std::endl
 //using namespace std;
 
@@ -15,6 +16,7 @@ Stock::Stock(const std::string& volume, const std::string& companyName, const st
 
 // Display data
 void Stock::displayData() {
+    displayGraph();
     std::cout << "Company Name: " << companyName << std::endl;
     std::cout << "Ticker: " << ticker << std::endl;
     std::cout << "Timestamp: " << timestamp << std::endl;
@@ -22,7 +24,68 @@ void Stock::displayData() {
     std::cout << "Change: " << change << std::endl;
     std::cout << "Previous Close: " << previousClose << std::endl;
     std::cout << "Volume: " << volume << std::endl;
-    std::cout << "Direction: " << (up ? "Up" : "Down") << std::endl;
+}
+
+void Stock::displayGraph() {
+    std::vector<double> yValues = getHistory();
+
+    if (yValues.empty()) {
+        std::cout << "No data available to plot.\n";
+        return;
+    }
+
+    int days = (int)yValues.size();
+    double minY = *std::min_element(yValues.begin(), yValues.end());
+    double maxY = *std::max_element(yValues.begin(), yValues.end());
+
+    // Scaling settings
+    int graphHeight = 20; // Number of rows in the graph
+    int graphWidth = days; // Number of columns based on days
+    double scale = (maxY - minY) / graphHeight;
+
+    // Adjust minY and maxY to fit into the graph
+    minY = std::floor(minY / scale) * scale;
+    maxY = std::ceil(maxY / scale) * scale;
+
+    // Header
+    std::cout << "Line Graph: Stock Data (X = Day, Y = Value)\n\n";
+
+    // Print graph row by row
+    for (double y = maxY; y >= minY; y -= scale) {
+        std::cout << std::setw(6) << std::fixed << std::setprecision(1) << y << " |";
+        for (int x = 0; x < graphWidth; ++x) {
+            if (yValues[x] >= y && yValues[x] < y + scale) {
+                std::cout << "*"; // Plot point
+            }
+            else {
+                std::cout << " ";
+            }
+        }
+        std::cout << "\n";
+    }
+
+    // X-axis
+    std::cout << "       +" << std::string(graphWidth, '-') << "\n";
+
+    // X-axis labels
+    std::cout << "        "; // Adjusted to shift labels left by one
+    for (int x = 0; x < graphWidth; ++x) {
+        if (x % 5 == 0) {
+            std::cout << "|"; // Vertical marker for labeled days
+        }
+        else {
+            std::cout << " ";
+        }
+    }
+    std::cout << "\n";
+
+    std::cout << "    "; // Adjusted to shift labels left by one
+    for (int x = 0; x < graphWidth; ++x) {
+        if (x % 5 == 0) {
+            std::cout << std::setw(5) << x; // Label every 5th day
+        }
+    }
+    std::cout << "\n";
 }
 
 // Getters
