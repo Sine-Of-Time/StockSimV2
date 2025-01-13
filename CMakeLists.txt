@@ -20,7 +20,7 @@ find_package(jsoncpp CONFIG REQUIRED)
 
 
 # Add source to this project's executable.
-add_executable (HelloWorld "helloWorld.cpp" "curl_function.cpp" "curl_function.h" "user.h" "user.cpp" "stock.cpp" "stock.h" "Company.cpp" "Company.h")
+add_executable (HelloWorld "helloWorld.cpp" "curl_function.cpp" "curl_function.h" "user.h" "user.cpp" "stock.cpp" "stock.h" "Manager.cpp" "Manager.h")
 
 target_link_libraries(HelloWorld PRIVATE CURL::libcurl)
 target_link_libraries(HelloWorld PRIVATE JsonCpp::JsonCpp)

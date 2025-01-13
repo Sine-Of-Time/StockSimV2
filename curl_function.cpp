@@ -8,6 +8,9 @@
 using namespace Json;
 using namespace std;
 
+
+std::string api = "2c53720136914f2e9a7c3623f965eb14";
+
 // Callback function for cURL to handle the response
 size_t WriteCallback(void* contents, size_t size, size_t nmemb, string* output) {
     size_t totalSize = size * nmemb;
@@ -59,7 +62,7 @@ string get_price(const string& ticker_symbol, const string& api) {
     return price;
 }
 
-Value get_stock_quote(const std::string& ticker_symbol, const std::string& api) {
+Value get_stock_quote(const std::string& ticker_symbol) {
     CURL* curl = curl_easy_init();
     if (!curl) {
         cerr << "Failed to initialize cURL." << endl;
@@ -101,10 +104,11 @@ Value get_stock_quote(const std::string& ticker_symbol, const std::string& api) 
     return root;
 }
 
-std::vector<double> get_stock_prices(const std::string& ticker_symbol, const std::string& api) {
+//This works -11/12/24
+std::vector<double> get_stock_prices(const std::string& ticker_symbol) {
     CURL* curl = curl_easy_init();
     if (!curl) {
-        //std::cout << "Failed to initialize cURL." << std::endl;
+        std::cout << "Failed to initialize cURL." << std::endl;
         return {}; // Return an empty vector on error
     }
 

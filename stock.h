@@ -2,7 +2,8 @@
 #define STOCK_H
 
 #include <string>
-using namespace std;
+#include <vector>
+//using namespace std;
 
 class Stock {
 private:
@@ -13,8 +14,11 @@ private:
     std::string value;
     std::string change;
     std::string previousClose;
-    double history[30];
+    std::vector<double> history;
     bool up;
+
+
+    void getHistory();
 
 public:
     // Constructor
@@ -50,7 +54,7 @@ public:
 
     // Display data
     void displayData();
-
+   
     // Virtual destructor
     virtual ~Stock() {}
 };

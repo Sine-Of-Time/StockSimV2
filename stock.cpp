@@ -1,6 +1,8 @@
 #include "stock.h"
+#include "curl_function.h"
+#include <vector>
 #include <iostream> // For std::cout and std::endl
-using namespace std;
+//using namespace std;
 
 // Constructor
 Stock::Stock(const std::string& volume, const std::string& companyName, const std::string& ticker,
@@ -8,19 +10,19 @@ Stock::Stock(const std::string& volume, const std::string& companyName, const st
     const std::string& previousClose, bool up)
     : volume(volume), companyName(companyName), ticker(ticker), timestamp(timestamp),
     value(value), change(change), previousClose(previousClose), up(up) {
-    
-}
+        getHistory();
+    }
 
 // Display data
 void Stock::displayData() {
-    cout << "Company Name: " << companyName << endl;
-    cout << "Ticker: " << ticker << endl;
-    cout << "Timestamp: " << timestamp << endl;
-    cout << "Value: " << value << endl;
-    cout << "Change: " << change << endl;
-    cout << "Previous Close: " << previousClose << endl;
-    cout << "Volume: " << volume << endl;
-    cout << "Direction: " << (up ? "Up" : "Down") << endl;
+    std::cout << "Company Name: " << companyName << std::endl;
+    std::cout << "Ticker: " << ticker << std::endl;
+    std::cout << "Timestamp: " << timestamp << std::endl;
+    std::cout << "Value: " << value << std::endl;
+    std::cout << "Change: " << change << std::endl;
+    std::cout << "Previous Close: " << previousClose << std::endl;
+    std::cout << "Volume: " << volume << std::endl;
+    std::cout << "Direction: " << (up ? "Up" : "Down") << std::endl;
 }
 
 // Getters
@@ -50,6 +52,10 @@ std::string Stock::getChange() const {
 
 std::string Stock::getPreviousClose() const {
     return previousClose;
+}
+
+void Stock::getHistory() {
+    history = get_stock_prices(ticker);
 }
 
 // Setters
