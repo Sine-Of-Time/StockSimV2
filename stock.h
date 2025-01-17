@@ -15,9 +15,8 @@ private:
     std::string change;
     std::string previousClose;
     std::vector<double> history;
+    int issuedQuantity;
     bool up;
-    int issuedQuantity; // New data member
-
     void setHistory();
 
 public:
@@ -30,7 +29,7 @@ public:
         const std::string& change = "0.0",
         const std::string& previousClose = "0.0",
         bool up = false,
-        int issuedQuantity = 0); // Updated constructor
+        int issuedQuantity = 0); 
 
     void increaseIssuedQuantityBy(int increase);
     void decreaseIssuedQuantityBy(int decrease);
@@ -44,7 +43,7 @@ public:
     std::string getChange() const;
     std::string getPreviousClose() const;
     std::vector<double> getHistory();
-    int getIssuedQuantity() const; // New getter
+    int getIssuedQuantity() const; 
 
     // Setters
     void setVolume(const std::string& newVolume);
@@ -54,7 +53,7 @@ public:
     void setValue(const std::string& newValue);
     void setChange(const std::string& newChange);
     void setPreviousClose(const std::string& newPreviousClose);
-    void setIssuedQuantity(int newIssuedQuantity); // New setter
+    void setIssuedQuantity(int newIssuedQuantity); 
 
     // Display data
     void displayData();

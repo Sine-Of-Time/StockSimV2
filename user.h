@@ -17,6 +17,15 @@ public:
     // Constructor
     User(const std::string& username = "", int networth = 0);
 
+    void adjustBalance();
+    Stock getStockByTicker(const std::string& ticker) const;
+    void increaseBalanceBy(int increase);
+    void decreaseBalanceBy(int decrease);
+    void buyStock(Stock stock, int amountToBuy);
+    void sellStock(std::string ticker, int amountToSell);
+    void displayPortfolio() const;
+    void displayUserData() const;
+
     // Getters
     std::string getUsername() const;
     int getNetworth() const;
@@ -26,13 +35,6 @@ public:
     void setUsername(const std::string& username);
     void setNetworth(int networth);
     void setBalance(int balance); // Setter for balance
-
-    // Function to get a stock based on a ticker
-    Stock getStockByTicker(const std::string& ticker) const;
-
-    // Placeholder functions
-    void buyStock(Stock stock,int amountToBuy);
-    void sellStock(std::string ticker,int amountToSell);
 };
 
 #endif // USER_H

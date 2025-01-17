@@ -9,9 +9,6 @@
 
 class Manager {
 private:
-    //std::string companyName;
-    //std::string ticker;
-   
 
 public:
     // Constructor
@@ -19,6 +16,8 @@ public:
 
     // Main functions
     std::vector<std::string> initStock(const std::string tckr) const;
+    void displayLine();
+    void displayMainMenu();
 
     // Getters
     Stock getStock(const std::string tckr) const;

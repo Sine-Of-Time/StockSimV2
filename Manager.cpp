@@ -48,6 +48,21 @@ std::vector<std::string> Manager::initStock(const std::string ticker) const {
     }return tmpStorage;
 }
 
+void Manager::displayLine() {
+    std::cout << "----------------------------------------------------------\n";
+}
+
+void Manager::displayMainMenu() {
+    //int choice = 0;
+    std::cout << "\n=== StockSim Menu ===\n";
+    std::cout << "1. Search for Stocks\n";
+    std::cout << "2. View your Portfolio\n";
+    std::cout << "3. View your Info\n";
+    std::cout << "4. Exit\n";
+    std::cout << "Enter your choice: ";
+    //std::cin >> choice;
+    //return choice;
+}
+
 // Destructor
 Manager::~Manager() {}
-
