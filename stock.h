@@ -19,7 +19,6 @@ private:
     int issuedQuantity; // New data member
 
     void setHistory();
-    void increaseIssuedQuantityBy(int increase);
 
 public:
     // Constructor
@@ -32,6 +31,9 @@ public:
         const std::string& previousClose = "0.0",
         bool up = false,
         int issuedQuantity = 0); // Updated constructor
+
+    void increaseIssuedQuantityBy(int increase);
+    void decreaseIssuedQuantityBy(int decrease);
 
     // Getters
     std::string getVolume() const;

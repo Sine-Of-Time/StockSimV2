@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include "stock.h"
 #include <stack>
+#include <vector>
 
 class Manager {
 private:
@@ -17,7 +18,7 @@ public:
     Manager();
 
     // Main functions
-    Stock initStock(const std::string tckr) const;
+    std::vector<std::string> initStock(const std::string tckr) const;
 
     // Getters
     Stock getStock(const std::string tckr) const;

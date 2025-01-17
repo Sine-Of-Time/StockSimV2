@@ -31,8 +31,8 @@ public:
     Stock getStockByTicker(const std::string& ticker) const;
 
     // Placeholder functions
-    void buyStock();
-    void sellStock();
+    void buyStock(Stock stock,int amountToBuy);
+    void sellStock(std::string ticker,int amountToSell);
 };
 
 #endif // USER_H

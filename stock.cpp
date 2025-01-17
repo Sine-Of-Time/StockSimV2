@@ -92,6 +92,10 @@ void Stock::increaseIssuedQuantityBy(int increase) {
     issuedQuantity = issuedQuantity + increase;
 }
 
+void Stock::decreaseIssuedQuantityBy(int decrease) {
+    issuedQuantity = issuedQuantity - decrease;
+}
+
 // Getters
 std::string Stock::getVolume() const {
     return volume;
