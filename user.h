@@ -29,12 +29,13 @@ public:
     // Getters
     std::string getUsername() const;
     int getNetworth() const;
-    int getBalance() const; // Getter for balance
+    int getBalance() const; 
+    const std::unordered_map<std::string, Stock>& getPortfolio() const;
 
     // Setters
     void setUsername(const std::string& username);
     void setNetworth(int networth);
-    void setBalance(int balance); // Setter for balance
+    void setBalance(int balance); 
 };
 
 #endif // USER_H

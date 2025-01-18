@@ -33,6 +33,8 @@ public:
 
     void increaseIssuedQuantityBy(int increase);
     void decreaseIssuedQuantityBy(int decrease);
+    void bestTimeToBuyLast30Days();
+
 
     // Getters
     std::string getVolume() const;

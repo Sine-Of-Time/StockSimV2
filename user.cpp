@@ -116,9 +116,6 @@ void User::adjustBalance() {
     std::cout << "----------------------------------------------------------\n";
 }
 
-
-
-
 void User::displayPortfolio() const {
     if (portfolio.empty()) {
         std::cout << "Your portfolio is empty.\n";
@@ -169,6 +166,10 @@ int User::getNetworth() const {
 
 int User::getBalance() const {
     return balance;
+}
+
+const std::unordered_map<std::string, Stock>& User::getPortfolio() const{
+    return portfolio;
 }
 
 // Setters

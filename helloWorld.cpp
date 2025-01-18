@@ -1,3 +1,5 @@
+#define USER_FILE "User.txt"
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -13,7 +15,20 @@ int main() {
     short choice = 0;
     Manager man;
     User user;
+    //user = man.loadUserData("User.txt");
+    //user.displayPortfolio();
+    //user.displayUserData();
 
+    user.setBalance(234);
+    user.setNetworth(432);
+    user.setUsername("Testing");
+    man.saveUserData(user,"User.txt");
+    
+    
+    
+    
+
+    /*
     do {
         man.displayMainMenu();
         std::cin >> choice;
@@ -60,6 +75,6 @@ int main() {
             std::cout << "Invalid choice. Please try again.\n";
             break;
         }
-    } while (choice != 4);
+    } while (choice != 4); */
     return 0;
 }

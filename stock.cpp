@@ -14,6 +14,29 @@ Stock::Stock(const std::string& volume, const std::string& companyName, const st
 }
 
 // Display data
+
+void Stock::bestTimeToBuyLast30Days() {
+    if (history.empty()) {
+        std::cout << "No historical data available to determine the best time to buy.\n";
+        return;
+    }
+
+    double minPrice = history[0];
+    int bestDay = 0; // Index of the best day to buy
+
+    // Iterate through the history to find the minimum price and its index
+    for (size_t i = 1; i < history.size(); ++i) {
+        if (history[i] < minPrice) {
+            minPrice = history[i];
+            bestDay = i;
+        }
+    }
+
+    // Display the result
+    std::cout << "The best time to buy in the last 30 days was on day " << bestDay
+        << " with a price of $" << minPrice << ".\n";
+}
+
 void Stock::displayData() {
     displayGraph();
     std::cout << "Company Name: " << companyName << std::endl;

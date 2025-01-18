@@ -1,18 +1,216 @@
 #include "Manager.h"
 #include "stock.h"
 #include "curl_function.h"
-#include <cstring> // For std::memcpy
+#include <cstring> 
 #include <curl/curl.h>
-#include <json/json.h> // Include JSONCPP header
+#include <json/json.h>
 #include <string>
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <fstream>
 #include "user.h"
 
 // Constructor
 Manager::Manager() {
    
+}
+
+void Manager::displayLogin() {
+    std::cout << "\n=== StockSim Login ===\n";
+    std::cout << "Please Enter Your User Name:\n";
+}
+
+void Manager::wipeFileData(const std::string& filename) const {
+    std::ofstream outFile(filename, std::ios::out | std::ios::trunc); // Open in truncate mode
+    if (!outFile) {
+        std::cerr << "Error: Unable to open file " << filename << " for writing.\n";
+        return;
+    }
+
+    // File is now empty
+    outFile.close();
+    std::cout << "File " << filename << " has been wiped clean.\n";
+}
+
+void Manager::saveUsers(const std::string& filename) const {
+    std::ofstream outFile(filename, std::ios::out | std::ios::trunc); // Overwrite the file
+    if (!outFile) {
+        std::cerr << "Error: Unable to open file " << filename << " for writing.\n";
+        return;
+    }
+
+    // Write the number of users
+    outFile << users.size() << "\n";
+
+    // Write each user's data
+    for (const auto& user : users) {
+        outFile << user.getUsername() << "\n";
+        outFile << user.getBalance() << "\n";
+        outFile << user.getNetworth() << "\n";
+
+        const auto& portfolio = user.getPortfolio();
+        outFile << portfolio.size() << "\n"; // Number of stocks in the portfolio
+        for (const auto& [ticker, stock] : portfolio) {
+            outFile << stock.getCompanyName() << "\n";
+            outFile << stock.getTicker() << "\n";
+            outFile << stock.getValue() << "\n";
+            outFile << stock.getIssuedQuantity() << "\n";
+        }
+    }
+
+    outFile.close();
+    std::cout << "All users' data saved to " << filename << ".\n";
+}
+
+void Manager::loadUsers(const std::string& filename) {
+    std::ifstream inFile(filename);
+    if (!inFile) {
+        std::cerr << "Error: Unable to open file " << filename << " for reading.\n";
+        return;
+    }
+
+    size_t userCount;
+    inFile >> userCount;
+    inFile.ignore(); // Ignore the newline after userCount
+
+    users.clear(); // Clear the existing users array
+
+    for (size_t i = 0; i < userCount; ++i) {
+        std::string username;
+        int balance, networth;
+        size_t portfolioSize;
+
+        std::getline(inFile, username);
+        inFile >> balance >> networth >> portfolioSize;
+        inFile.ignore(); // Ignore the newline after portfolioSize
+
+        User user(username, networth);
+        user.setBalance(balance);
+
+        for (size_t j = 0; j < portfolioSize; ++j) {
+            std::string companyName, ticker, value;
+            int issuedQuantity;
+
+            std::getline(inFile, companyName);
+            std::getline(inFile, ticker);
+            std::getline(inFile, value);
+            inFile >> issuedQuantity;
+            inFile.ignore(); // Ignore the newline after issuedQuantity
+
+            Stock stock("", companyName, ticker, 0, value, "", "", false, issuedQuantity);
+            user.buyStock(stock, issuedQuantity);
+        }
+
+        users.push_back(user);
+    }
+
+    inFile.close();
+    std::cout << "All users' data loaded from " << filename << ".\n";
+}
+
+
+void Manager::saveUserData(const User& user, const std::string& filename) const {
+    std::ofstream outFile(filename, std::ios::out | std::ios::trunc); // Overwrite the file
+    if (!outFile) {
+        std::cerr << "Error: Unable to open file " << filename << " for writing.\n";
+        return;
+    }
+
+    // Write user data
+    outFile << user.getUsername() << "\n";
+    outFile << user.getBalance() << "\n";
+    outFile << user.getNetworth() << "\n";
+
+    // Write portfolio data
+    const auto& portfolio = user.getPortfolio(); 
+    outFile << portfolio.size() << "\n"; // Number of stocks in the portfolio
+    for (const auto& [ticker, stock] : portfolio) {
+        outFile << stock.getCompanyName() << "\n";
+        outFile << stock.getTicker() << "\n";
+        outFile << stock.getValue() << "\n";
+        outFile << stock.getIssuedQuantity() << "\n";
+    }
+
+    outFile.close();
+    std::cout << "User data saved to " << filename << ".\n";
+}
+
+User Manager::loadUserData(const std::string& filename) const {
+    std::ifstream inFile(filename);
+    if (!inFile) {
+        std::cerr << "Error: Unable to open file " << filename << " for reading.\n";
+        return User(); // Return a default `User` object
+    }
+
+    std::string username;
+    int balance, networth;
+    size_t portfolioSize;
+
+    // Read user data
+    std::getline(inFile, username);
+    inFile >> balance >> networth >> portfolioSize;
+    inFile.ignore(); // Ignore the newline after portfolioSize
+
+    User user(username, networth);
+    user.setBalance(balance);
+
+    // Read portfolio data
+    for (size_t i = 0; i < portfolioSize; ++i) {
+        std::string companyName, ticker, value;
+        int issuedQuantity;
+
+        std::getline(inFile, companyName);
+        std::getline(inFile, ticker);
+        std::getline(inFile, value);
+        inFile >> issuedQuantity;
+        inFile.ignore(); // Ignore the newline after issuedQuantity
+
+        Stock stock("", companyName, ticker, 0, value, "", "", false, issuedQuantity);
+        user.buyStock(stock, issuedQuantity); // Add the stock to the user's portfolio
+    }
+
+    inFile.close();
+    std::cout << "User data loaded from " << filename << ".\n";
+
+    return user;
+}
+
+void Manager::miscMenu() {
+    std::cout << "\n=== Misc Menu ===\n";
+    std::cout << "1. Best Time To Buy Stock Last 30 Days\n";
+    std::cout << "2. Exit\n";
+    std::cout << "Enter your choice: ";
+}
+
+// Add a new user
+void Manager::addUser(const User& user) {
+    // Check if the user already exists
+    auto it = std::find_if(users.begin(), users.end(),
+        [&user](const User& u) { return u.getUsername() == user.getUsername(); });
+
+    if (it != users.end()) {
+        std::cout << "User " << user.getUsername() << " already exists in the system.\n";
+        return;
+    }
+
+    users.push_back(user);
+    std::cout << "User " << user.getUsername() << " added successfully.\n";
+}
+
+// Remove a user by username
+bool Manager::removeUser(const std::string& username) {
+    auto it = std::remove_if(users.begin(), users.end(),
+        [&username](const User& u) { return u.getUsername() == username; });
+
+    if (it == users.end()) {
+        std::cout << "User " << username << " not found.\n";
+        return false; // User not found
+    }
+
+    users.erase(it, users.end()); // Remove user(s)
+    std::cout << "User " << username << " removed successfully.\n";
+    return true;
 }
 
 void Manager::searchForStock() {
@@ -66,6 +264,10 @@ Stock Manager::getStock(const std::string ticker) const {
     return newStock;
 }
 
+const std::vector<User>& Manager::getUsers() const {
+    return users;
+}
+
 std::vector<std::string> Manager::initStock(const std::string ticker) const {
     std::string api_key = "2c53720136914f2e9a7c3623f965eb14";
     Json::Value stockData = get_stock_quote(ticker);
@@ -99,6 +301,10 @@ void Manager::displayMainMenu() {
 
 void Manager::setStockErrorTicker(bool status) {
     showStockErrorTicker = status;
+}
+
+void Manager::setUsers(const std::vector<User>& newUsers) {
+    users = newUsers;
 }
 
 // Destructor

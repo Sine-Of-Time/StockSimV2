@@ -6,9 +6,11 @@
 #include "stock.h"
 #include <stack>
 #include <vector>
+#include "user.h"
 
 class Manager {
 private:
+    std::vector<User> users;
     bool showStockErrorTicker;
 
 public:
@@ -18,13 +20,26 @@ public:
     // Main functions
     std::vector<std::string> initStock(const std::string tckr) const;
     void displayLine();
+    void miscMenu();
     void displayMainMenu();
     void searchForStock();
+    void saveUserData(const User& user, const std::string& filename) const;
+    void displayLogin();
+    void wipeFileData(const std::string& filename) const;
+    void saveUsers(const std::string& filename) const;
+    void loadUsers(const std::string& filename);
+    User loadUserData(const std::string& filename) const;
+    const std::vector<User>& getUsers() const;
+    void setUsers(const std::vector<User>& newUsers);
+
+    // User Management
+    void addUser(const User& user);            // Add a new user
+    bool removeUser(const std::string& username); // Remove a user by username
 
     // Getters
     Stock getStock(const std::string tckr) const;
 
-    //Setters
+    // Setters
     void setStockErrorTicker(bool status);
 
     // Destructor
