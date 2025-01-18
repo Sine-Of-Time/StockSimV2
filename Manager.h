@@ -9,6 +9,7 @@
 
 class Manager {
 private:
+    bool showStockErrorTicker;
 
 public:
     // Constructor
@@ -18,9 +19,13 @@ public:
     std::vector<std::string> initStock(const std::string tckr) const;
     void displayLine();
     void displayMainMenu();
+    void searchForStock();
 
     // Getters
     Stock getStock(const std::string tckr) const;
+
+
+    void setStockErrorTicker(bool status);
 
     // Destructor
     ~Manager();

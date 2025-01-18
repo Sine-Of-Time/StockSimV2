@@ -4,15 +4,17 @@
 #include "Manager.h"
 #include <iomanip>
 #include <algorithm>
-#include <limits> // For std::numeric_limits
+#include <limits>
+#include <json/json.h>
 #include "user.h"
+#include "curl_function.h"
 
 int main() {
     short choice = 0;
     Manager man;
     User user;
 
-    do{
+    do {
         man.displayMainMenu();
         std::cin >> choice;
 
@@ -20,7 +22,8 @@ int main() {
         switch (choice) {
         case 1://Seach for stocks
             man.displayLine();
-            //TO DO search f(x) -KF 1/17/24
+            man.searchForStock();
+            //TO DO BY/SELL f(x) -KF 1/17/24
             man.displayLine();
             break;
         case 2://Display portfolio
@@ -46,24 +49,6 @@ int main() {
             std::cout << "Invalid choice. Please try again.\n";
             break;
         }
-    }while(choice != 4);
-
-
-    
-    
-    /*Manager man;
-    Stock st = man.getStock("AAPL");
-    User user;
-    user.buyStock(st, 25);
-    Stock st2 = user.getStockByTicker("AAPL");
-    user.sellStock("AAPL", 20);
-    Stock st3 = man.getStock("ABCL");
-    Stock st4 = man.getStock("ABM");
-    user.buyStock(st3, 235);
-    user.buyStock(st4, 5);
-    user.displayPortfolio();
-    */
+    } while (choice != 4);
     return 0;
 }
-
-

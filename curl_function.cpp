@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <json/json.h>
 //#include <iostream>
 
 using namespace Json;
@@ -17,6 +18,29 @@ size_t WriteCallback(void* contents, size_t size, size_t nmemb, string* output) 
     output->append(static_cast<char*>(contents), totalSize);
     return totalSize;
 }
+
+std::string fetchTwelveData(const std::string& url) {
+    CURL* curl;
+    CURLcode res;
+    std::string response;
+
+    curl = curl_easy_init();
+    if (curl) {
+        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+
+        res = curl_easy_perform(curl);
+        if (res != CURLE_OK) {
+            cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << endl;
+        }
+
+        curl_easy_cleanup(curl);
+    }
+
+    return response;
+}
+
 
 string get_price(const string& ticker_symbol, const string& api) {
     CURL* curl = curl_easy_init();
@@ -152,4 +176,41 @@ std::vector<double> get_stock_prices(const std::string& ticker_symbol) {
     }
 
     return closingPrices; // Return the vector of closing prices
+}
+
+std::vector<std::string> searchStocksByPrefix(const std::string& prefix, const std::string& apiKey) {
+    std::string url = "https://api.twelvedata.com/symbol_search?symbol=" + prefix + "&apikey=" + apiKey;
+    std::string response = fetchTwelveData(url);
+
+    std::vector<std::string> stockSymbols;
+
+    try {
+        // Parse the JSON response using JSONCPP
+        Json::CharReaderBuilder builder;
+        Json::Value root;
+        std::string errs;
+
+        std::istringstream responseStream(response);
+        if (!Json::parseFromStream(builder, responseStream, &root, &errs)) {
+            std::cerr << "Failed to parse JSON: " << errs << std::endl;
+            return {};
+        }
+
+        // Check if the "data" field exists
+        if (!root.isMember("data")) {
+            std::cerr << "No data found for prefix '" << prefix << "'." << std::endl;
+            return {};
+        }
+
+        // Extract stock symbols
+        for (const auto& item : root["data"]) {
+            stockSymbols.push_back(item["symbol"].asString());
+        }
+
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Error parsing JSON: " << e.what() << std::endl;
+    }
+
+    return stockSymbols;
 }
