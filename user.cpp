@@ -10,7 +10,6 @@
 // Constructor
 User::User(const std::string& username, int networth) : username(username), networth(networth), balance(0) {}
 
-//Change this implementation -1/13/24
 Stock User::getStockByTicker(const std::string& ticker) const {
     try {
         Stock stock = portfolio.at(ticker); // Throws an exception
@@ -22,9 +21,11 @@ Stock User::getStockByTicker(const std::string& ticker) const {
     }
 }
 
-// Placeholder functions
 void User::buyStock(Stock stock,int amountToBuy) {
-    if ((stock.getTicker()).compare("Error") == 0) std::cout << "Stock selected to buy does not exist" << std::endl;
+    if ((stock.getTicker()).compare("Error") == 0) {
+        std::cout << "Stock selected to buy does not exist" << std::endl;
+        return;
+    }
     try {
         Stock stockTmp = portfolio.at(stock.getTicker()); // Throws an exception
         stockTmp.increaseIssuedQuantityBy(amountToBuy);

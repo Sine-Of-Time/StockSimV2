@@ -8,18 +8,18 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include "user.h"
 
 // Constructor
 Manager::Manager() {
    
 }
 
-
 void Manager::searchForStock() {
     std::string userPrefix;
 
     while (true) {
-        std::cout << "Enter stock symbol prefix (or 'exit' to quit): ";
+        std::cout << "Would you like to search for an stock?(exit move on): ";
         std::cin >> userPrefix;
 
         if (userPrefix == "exit") {
@@ -71,7 +71,8 @@ std::vector<std::string> Manager::initStock(const std::string ticker) const {
     Json::Value stockData = get_stock_quote(ticker);
     std::vector<std::string> tmpStorage;
 
-    if (!((stockData.get("name", "Unknown").asString()).compare("Unknown"))) {
+    std::string tmpStr2= stockData.get("name", "Unknown").asString();
+    if (!(tmpStr2.compare("Unknown"))) {
         if(showStockErrorTicker)std::cout << "Could not find stock with ticker:" << ticker << std::endl;
         tmpStorage = { "Error", "Error", "Error", "Error", "Error", "Error" };
         return tmpStorage;

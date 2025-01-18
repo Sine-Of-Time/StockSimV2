@@ -24,7 +24,7 @@ public:
     // Getters
     Stock getStock(const std::string tckr) const;
 
-
+    //Setters
     void setStockErrorTicker(bool status);
 
     // Destructor

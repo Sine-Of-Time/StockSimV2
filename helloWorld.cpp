@@ -19,11 +19,22 @@ int main() {
         std::cin >> choice;
 
         char exitLoop = 'N';
+        char buy = 'N';
+        std::string tick;
+        int amountOfStocks;
         switch (choice) {
         case 1://Seach for stocks
             man.displayLine();
             man.searchForStock();
-            //TO DO BY/SELL f(x) -KF 1/17/24
+            std::cout << "Which stock would you like to buy?(exit to skip):";
+            std::cin >> tick;
+            if (tick.compare("exit") == 0) {
+                std::cout << "Goodbye\n";
+                break;
+            }
+            std::cout << "Please enter the amount you would like to buy:\n";
+            std::cin >> amountOfStocks;
+            user.buyStock(man.getStock(tick), amountOfStocks);
             man.displayLine();
             break;
         case 2://Display portfolio
