@@ -10,16 +10,6 @@
 // Constructor
 User::User(const std::string& username, int networth) : username(username), networth(networth), balance(0) {}
 
-Stock User::getStockByTicker(const std::string& ticker) const {
-    try {
-        Stock stock = portfolio.at(ticker); // Throws an exception
-        return stock;
-    }
-    catch (const std::out_of_range& e) {
-        std::cout << "Ticker " << ticker << " does not exist to be returned: " << e.what() << std::endl;
-        return Stock();
-    }
-}
 
 void User::buyStock(Stock stock,int amountToBuy) {
     if ((stock.getTicker()).compare("Error") == 0) {
@@ -29,12 +19,12 @@ void User::buyStock(Stock stock,int amountToBuy) {
     try {
         Stock stockTmp = portfolio.at(stock.getTicker()); // Throws an exception
         stockTmp.increaseIssuedQuantityBy(amountToBuy);
-        std::cout << "Brought " << amountToBuy << " shares of " << stockTmp.getCompanyName() << "increasing it to" << stockTmp.getIssuedQuantity() << std::endl;
+       if(showMsg)std::cout << "Brought " << amountToBuy << " shares of " << stockTmp.getCompanyName() << "increasing it to" << stockTmp.getIssuedQuantity() << std::endl;
     }
     catch (const std::out_of_range& e) {
         stock.increaseIssuedQuantityBy(amountToBuy);
         portfolio[stock.getTicker()] = stock;
-        std::cout << "Added Stock " << stock.getCompanyName() <<  " to your portfolio by buying " << amountToBuy << " shares!" << std::endl;
+        if(showMsg)std::cout << "Added Stock " << stock.getCompanyName() <<  " to your portfolio by buying " << amountToBuy << " shares!" << std::endl;
     }
 }
 
@@ -47,10 +37,10 @@ void User::sellStock(std::string ticker,int amountToSell) {
         }
         int prevShares = stock.getIssuedQuantity();
         stock.decreaseIssuedQuantityBy(amountToSell);
-        std::cout << "Sold " << amountToSell << " shares of " << stock.getCompanyName() << " taking your shares from "<< prevShares <<" to "<< stock.getIssuedQuantity() << std::endl;
+        if(showMsg)std::cout << "Sold " << amountToSell << " shares of " << stock.getCompanyName() << " taking your shares from "<< prevShares <<" to "<< stock.getIssuedQuantity() << std::endl;
     }
     catch (const std::out_of_range& e) {
-        std::cout << "Ticker "<< ticker << " does not exist to be sold: " << e.what() << std::endl;
+        if(showMsg)std::cout << "Ticker "<< ticker << " does not exist to be sold: " << e.what() << std::endl;
     }
 }
 
@@ -156,6 +146,17 @@ void User::decreaseBalanceBy(int decrease) {
 }
 
 // Getters
+Stock User::getStockByTicker(const std::string& ticker) const {
+    try {
+        Stock stock = portfolio.at(ticker); // Throws an exception
+        return stock;
+    }
+    catch (const std::out_of_range& e) {
+        std::cout << "Ticker " << ticker << " does not exist to be returned: " << e.what() << std::endl;
+        return Stock();
+    }
+}
+
 std::string User::getUsername() const {
     return username;
 }

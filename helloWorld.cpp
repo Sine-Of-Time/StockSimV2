@@ -12,39 +12,16 @@
 #include "curl_function.h"
 
 int main() {
-    short choice = 0;
+    std::string userName;
+    int choice = 0;
     Manager man;
     User user;
-    User user2;
-
-   
-    //man.loadUsers(USER_FILE);
-    //user = man.loadUserData("User.txt");
-    user.displayPortfolio();
-    user.displayUserData();
-
-    user.setBalance(234);
-    user.setNetworth(432);
-    user.setUsername("Testing");
-    user.buyStock(man.getStock("AA"),20);
-
-    user2.setBalance(999);
-    user2.setNetworth(777);
-    user2.setUsername("Testing2");
-    user2.buyStock(man.getStock("AAPL"), 20);
+    man.loadUsers(USER_FILE);
+    man.displayLogin();
+    std::cin >> userName;
+    user = man.findUserByUsername(userName);//Need to bug test this
 
 
-    man.addUser(user);
-    man.addUser(user2);
-
-    man.saveUsers(USER_FILE);
-    //man.saveUserData(user,"User.txt");
-    
-    
-    
-    
-
-    /*
     do {
         man.displayMainMenu();
         std::cin >> choice;
@@ -91,6 +68,6 @@ int main() {
             std::cout << "Invalid choice. Please try again.\n";
             break;
         }
-    } while (choice != 4); */
+    } while (choice != 4); 
     return 0;
 }

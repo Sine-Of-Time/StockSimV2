@@ -11,6 +11,7 @@ class Manager {
 private:
     std::vector<User> users;
     bool showStockErrorTicker;
+    bool debug = false;
 
 public:
     // Constructor
@@ -22,6 +23,7 @@ public:
     void miscMenu();
     void displayMainMenu();
     void searchForStock();
+    User findUserByUsername(const std::string& userName) const;
     void saveUserData(const User& user, const std::string& filename) const;
     void displayLogin();
     void wipeFileData(const std::string& filename) const;

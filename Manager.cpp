@@ -21,6 +21,19 @@ void Manager::displayLogin() {
     std::cout << "Please Enter Your User Name:\n";
 }
 
+User Manager::findUserByUsername(const std::string& userName) const {
+    // Iterate through the users array to find a match
+    for (const auto& user : users) {
+        if (user.getUsername() == userName) {
+            return user; // Return the matching user
+        }
+    }
+
+    // If no match is found, return a default User object
+    std::cerr << "User with username \"" << userName << "\" not found.\n";
+    return User(); // Default user
+}
+
 void Manager::wipeFileData(const std::string& filename) const {
     std::ofstream outFile(filename, std::ios::out | std::ios::trunc); // Open in truncate mode
     if (!outFile) {
@@ -190,21 +203,22 @@ void Manager::miscMenu() {
     std::cout << "Enter your choice: ";
 }
 
-// Add a new user
 void Manager::addUser(const User& user) {
     // Check if the user already exists
     auto it = std::find_if(users.begin(), users.end(),
         [&user](const User& u) { return u.getUsername() == user.getUsername(); });
 
     if (it != users.end()) {
-        std::cout << "User " << user.getUsername() << " already exists in the system.\n";
+        // Update the existing user with the new user's details
+        *it = user; // Assuming operator= is implemented for User
+        std::cout << "User " << user.getUsername() << " updated successfully.\n";
         return;
     }
 
+    // Add the new user
     users.push_back(user);
     std::cout << "User " << user.getUsername() << " added successfully.\n";
 }
-
 // Remove a user by username
 bool Manager::removeUser(const std::string& username) {
     auto it = std::remove_if(users.begin(), users.end(),

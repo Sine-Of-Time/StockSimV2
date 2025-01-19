@@ -12,6 +12,7 @@ private:
     std::unordered_map<std::string, Stock> portfolio;
     int balance;
     int networth;
+    bool showMsg = false;
 
 public:
     // Constructor
