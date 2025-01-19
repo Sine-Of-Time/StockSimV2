@@ -4,7 +4,6 @@
 #include <string>
 #include <unordered_map>
 #include "stock.h"
-#include <stack>
 #include <vector>
 #include "user.h"
 
@@ -35,6 +34,7 @@ public:
     // User Management
     void addUser(const User& user);            // Add a new user
     bool removeUser(const std::string& username); // Remove a user by username
+    User getUserByIndex(size_t index) const;      // Get a user by index
 
     // Getters
     Stock getStock(const std::string tckr) const;
@@ -47,3 +47,4 @@ public:
 };
 
 #endif // MANAGER_H
+

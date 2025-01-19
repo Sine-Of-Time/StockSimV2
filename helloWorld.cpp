@@ -15,14 +15,30 @@ int main() {
     short choice = 0;
     Manager man;
     User user;
+    User user2;
+
+   
+    //man.loadUsers(USER_FILE);
     //user = man.loadUserData("User.txt");
-    //user.displayPortfolio();
-    //user.displayUserData();
+    user.displayPortfolio();
+    user.displayUserData();
 
     user.setBalance(234);
     user.setNetworth(432);
     user.setUsername("Testing");
-    man.saveUserData(user,"User.txt");
+    user.buyStock(man.getStock("AA"),20);
+
+    user2.setBalance(999);
+    user2.setNetworth(777);
+    user2.setUsername("Testing2");
+    user2.buyStock(man.getStock("AAPL"), 20);
+
+
+    man.addUser(user);
+    man.addUser(user2);
+
+    man.saveUsers(USER_FILE);
+    //man.saveUserData(user,"User.txt");
     
     
     

@@ -59,9 +59,16 @@ void Manager::saveUsers(const std::string& filename) const {
         }
     }
 
+    outFile.flush(); // Ensure all data is written to the file
     outFile.close();
-    std::cout << "All users' data saved to " << filename << ".\n";
+    if (outFile.fail()) {
+        std::cerr << "Error: Failed to properly save data to " << filename << ".\n";
+    }
+    else {
+        std::cout << "All users' data saved to " << filename << ".\n";
+    }
 }
+
 
 void Manager::loadUsers(const std::string& filename) {
     std::ifstream inFile(filename);
@@ -262,6 +269,13 @@ Stock Manager::getStock(const std::string ticker) const {
         false                           // Assume false for additional flag
     );
     return newStock;
+}
+
+User Manager::getUserByIndex(size_t index) const {
+    if (index >= users.size()) {
+        throw std::out_of_range("Index is out of bounds.");
+    }
+    return users[index];
 }
 
 const std::vector<User>& Manager::getUsers() const {
