@@ -1,3 +1,5 @@
+#define API_KEY "2c53720136914f2e9a7c3623f965eb14"
+
 #include "Manager.h"
 #include "stock.h"
 #include "curl_function.h"
@@ -258,7 +260,7 @@ void Manager::searchForStock() {
         }
 
         // Fetch matching stock symbols
-        std::vector<std::string> matches = searchStocksByPrefix(userPrefix, "2c53720136914f2e9a7c3623f965eb14");
+        std::vector<std::string> matches = searchStocksByPrefix(userPrefix, API_KEY);
 
         if (matches.empty()) {
             std::cout << "No matches found for prefix '" << userPrefix << "'." << std::endl;
@@ -273,7 +275,7 @@ void Manager::searchForStock() {
                     st.displayData();
                     displayLine();
                 }
-                if (k++ == 5)break;
+                if (k++ == 15)break;
             }
             std::cout << std::endl;
         }
@@ -309,7 +311,8 @@ const std::vector<User>& Manager::getUsers() const {
 }
 
 std::vector<std::string> Manager::initStock(const std::string ticker) const {
-    std::string api_key = "2c53720136914f2e9a7c3623f965eb14";
+    // double value = std::stod(str); // Convert the string to a double
+    std::string api_key = API_KEY;
     Json::Value stockData = get_stock_quote(ticker);
     std::vector<std::string> tmpStorage;
 
@@ -322,8 +325,21 @@ std::vector<std::string> Manager::initStock(const std::string ticker) const {
 
     // Extract data into tmpStorage
     for (int i = 0; i < 6; i++) {
-        tmpStorage.push_back(stockData.get(keys[i], "Unknown").asString());
+        Json::Value valueTmp = stockData.get(keys[i], "Unknown");
+        if (keys[i].compare("average_volume") == 0 || keys[i].compare("previous_close")== 0 || keys[i].compare("open") == 0) {
+            std::string tmpString = valueTmp.asString();
+            double tmpDouble = std::stod(tmpString);
+            tmpDouble = roundToPrecision(tmpDouble,2);
+            tmpString = std::to_string(tmpDouble);
+
+            tmpStorage.push_back(tmpString);
+        }else tmpStorage.push_back(valueTmp.asString());
     }return tmpStorage;
+}
+
+double Manager::roundToPrecision(double value, int precision) const {
+    double scale = std::pow(10.0, precision);
+    return std::round(value * scale) / scale;
 }
 
 void Manager::displayLine() {

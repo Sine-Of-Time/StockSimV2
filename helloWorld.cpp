@@ -29,19 +29,19 @@ int main() {
             std::cout << "Please enter the name of the user you want to login:\n";
             std::cin >> userName;
             user = man.findUserByUsername(userName);
+            if (user.getUsername() == "") choice2 = 0;
         }
     }
 
     do {
-        man.displayMainMenu();
-        std::cin >> choice;
-       
-
-
         char exitLoop = 'N';
         char buy = 'N';
         std::string tick;
         int amountOfStocks;
+
+        man.displayMainMenu();
+        std::cin >> choice;
+
         switch (choice) {
         case 1://Seach for stocks
             man.displayLine();

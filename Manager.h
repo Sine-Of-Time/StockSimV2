@@ -13,6 +13,8 @@ private:
     bool showStockErrorTicker;
     bool debug = false;
 
+    double roundToPrecision(double value, int precision) const;
+
 public:
     // Constructor
     Manager();

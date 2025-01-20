@@ -1,15 +1,14 @@
 #include "user.h"
 #include <string>
-#include <limits> // For input validation
+#include <limits> 
 #include <unordered_map>
 #include "stock.h"
 #include <stdexcept>
 #include <iostream>
-#include <iomanip> // For formatting output
+#include <iomanip> 
 
 // Constructor
 User::User(const std::string& username, double balance) : username(username), balance(balance), networth(0.0) {}
-
 
 void User::buyStock(Stock stock,int amountToBuy) {
     if ((stock.getTicker()).compare("Error") == 0) {
