@@ -141,7 +141,7 @@ void Manager::loadUsers(const std::string& filename) {
                 false,        // Up (default)
                 issuedQuantity); // Issued Quantity
 
-            user.buyStock(stock, issuedQuantity);
+            user.addStock(stock);
         }
 
         users.push_back(user);
@@ -254,7 +254,7 @@ bool Manager::removeUser(const std::string& username) {
         return false; // User not found
     }
 
-    users.erase(it, users.end()); // Remove user(s)11
+    users.erase(it, users.end()); // Remove user(s)
     std::cout << "User " << username << " removed successfully.\n";
     return true;
 }
@@ -306,7 +306,7 @@ Stock Manager::getStock(const std::string ticker) const {
     tmpVolume = roundToPrecision(tmpVolume, 2);
     tmpOpen = roundToPrecision(tmpOpen, 2);
 
-    std::string companyName = tmpStorage[1];
+    std::string companyName = tmpStorage[0];
     std::string change = tmpStorage[4];
     std::string previousClose = tmpStorage[5];
 

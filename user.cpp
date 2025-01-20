@@ -10,7 +10,7 @@
 // Constructor
 User::User(const std::string& username, double balance) : username(username), balance(balance), networth(0.0) {}
 
-void User::buyStock(Stock stock,int amountToBuy) {
+void User::buyStock(Stock stock,int amountToBuy) { //This is causing issues with issued quanitiy
     if ((stock.getTicker()).compare("Error") == 0) {
         std::cout << "Stock selected to buy does not exist" << std::endl;
         return;
@@ -18,12 +18,12 @@ void User::buyStock(Stock stock,int amountToBuy) {
     try {
         Stock stockTmp = portfolio.at(stock.getTicker()); // Throws an exception
         stockTmp.increaseIssuedQuantityBy(amountToBuy);
-       if(showMsg)std::cout << "Brought " << amountToBuy << " shares of " << stockTmp.getCompanyName() << "increasing it to" << stockTmp.getIssuedQuantity() << std::endl;
+        std::cout << "Brought " << amountToBuy << " shares of " << stockTmp.getCompanyName() << "increasing it to" << stockTmp.getIssuedQuantity() << std::endl;
     }
     catch (const std::out_of_range& e) {
         stock.increaseIssuedQuantityBy(amountToBuy);
         portfolio[stock.getTicker()] = stock;
-        if(showMsg)std::cout << "Added Stock " << stock.getCompanyName() <<  " to your portfolio by buying " << amountToBuy << " shares!" << std::endl;
+        std::cout << "Added Stock " << stock.getCompanyName() <<  " to your portfolio by buying " << amountToBuy << " shares!" << std::endl;
     }
 }
 
@@ -40,6 +40,20 @@ void User::sellStock(std::string ticker,int amountToSell) {
     }
     catch (const std::out_of_range& e) {
         if(showMsg)std::cout << "Ticker "<< ticker << " does not exist to be sold: " << e.what() << std::endl;
+    }
+}
+
+void User::addStock(const Stock& stock) {
+    auto it = portfolio.find(stock.getTicker());
+    if (it != portfolio.end()) {
+        std::cout << "Stock " << stock.getCompanyName()
+            << " already exists in the portfolio.\n";
+    }
+    else {
+        // Stock does not exist, add it to the portfolio
+        portfolio[stock.getTicker()] = stock;
+        std::cout << "Added new stock " << stock.getCompanyName()
+            << " to the portfolio.\n";
     }
 }
 
@@ -89,17 +103,12 @@ void User::adjustBalance() {
             std::cin >> amount;
         }
 
-        if (amount > balance) {
-            std::cout << "Insufficient funds. Cannot decrease balance by $" << amount << ".\n";
-        }
+        if (amount > balance) std::cout << "Insufficient funds. Cannot decrease balance by $" << amount << ".\n";
         else {
             decreaseBalanceBy(amount);
             std::cout << "Your balance has been decreased by $" << amount << ".\n";
         }
-    }
-    else if (choice == 3) {
-        std::cout << "No changes made to your balance.\n";
-    }
+    }else if (choice == 3) std::cout << "No changes made to your balance.\n";
 
     std::cout << "Your current balance is: $" << balance << ".\n";
     std::cout << "----------------------------------------------------------\n";

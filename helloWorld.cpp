@@ -22,9 +22,7 @@ int main() {
     while (choice2!=1) {
         man.displayLogin();
         std::cin >> choice2;
-        if (choice2 == 2) {
-            man.createUser();
-        }
+        if (choice2 == 2) man.createUser();
         else {
             std::cout << "Please enter the name of the user you want to login:\n";
             std::cin >> userName;

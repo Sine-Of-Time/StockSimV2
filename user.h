@@ -25,6 +25,7 @@ public:
     void sellStock(std::string ticker, int amountToSell);
     void displayPortfolio() const;
     void displayUserData() const;
+    void addStock(const Stock& stock);
 
     // Getters
     std::string getUsername() const;
