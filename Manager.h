@@ -22,6 +22,7 @@ public:
     void displayLine();
     void miscMenu();
     void displayMainMenu();
+    void createUser();
     void searchForStock();
     User findUserByUsername(const std::string& userName) const;
     void saveUserData(const User& user, const std::string& filename) const;

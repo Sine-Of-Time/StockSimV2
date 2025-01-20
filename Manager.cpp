@@ -18,7 +18,19 @@ Manager::Manager() {
 
 void Manager::displayLogin() {
     std::cout << "\n=== StockSim Login ===\n";
-    std::cout << "Please Enter Your User Name:\n";
+    std::cout << "1.Login into existing account\n";
+    std::cout << "2.Create new user\n";
+}
+
+void Manager::createUser() {
+    std::string tmpUserName;
+    double tmpBalance;
+    std::cout << "Please enter the new users name:\n";
+    std::cin >> tmpUserName;
+    std::cout << "Please enter the new users balance\n";
+    std::cin >> tmpBalance;
+    User tmpUser(tmpUserName, tmpBalance);
+    addUser(tmpUser);
 }
 
 User Manager::findUserByUsername(const std::string& userName) const {

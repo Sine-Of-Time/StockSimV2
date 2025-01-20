@@ -8,7 +8,7 @@
 #include <iomanip> // For formatting output
 
 // Constructor
-User::User(const std::string& username, int networth) : username(username), networth(networth), balance(0) {}
+User::User(const std::string& username, double balance) : username(username), balance(balance), networth(0.0) {}
 
 
 void User::buyStock(Stock stock,int amountToBuy) {

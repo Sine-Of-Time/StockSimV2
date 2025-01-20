@@ -10,13 +10,13 @@ class User {
 private:
     std::string username;
     std::unordered_map<std::string, Stock> portfolio;
-    int balance;
-    int networth;
+    double balance;
+    double networth;
     bool showMsg = false;
 
 public:
     // Constructor
-    User(const std::string& username = "", int networth = 0);
+    User(const std::string& username = "", double balance = 0.0);
 
     void adjustBalance();
     Stock getStockByTicker(const std::string& ticker) const;

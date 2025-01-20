@@ -13,18 +13,30 @@
 
 int main() {
     std::string userName;
-    int choice = 0;
+    short choice = 0;
+    short choice2 = 0;
     Manager man;
     User user;
     man.loadUsers(USER_FILE);
-    man.displayLogin();
-    std::cin >> userName;
-    user = man.findUserByUsername(userName);//Need to bug test this
-
+    
+    while (choice2!=1) {
+        man.displayLogin();
+        std::cin >> choice2;
+        if (choice2 == 2) {
+            man.createUser();
+        }
+        else {
+            std::cout << "Please enter the name of the user you want to login:\n";
+            std::cin >> userName;
+            user = man.findUserByUsername(userName);
+        }
+    }
 
     do {
         man.displayMainMenu();
         std::cin >> choice;
+       
+
 
         char exitLoop = 'N';
         char buy = 'N';
