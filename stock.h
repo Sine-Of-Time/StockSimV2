@@ -17,8 +17,7 @@ private:
     std::vector<double> history;
     int issuedQuantity;
     bool up;
-
-    // Sets the historical stock prices
+    //Private functions
     void setHistory();
 
 public:
@@ -33,14 +32,8 @@ public:
         bool up = false,
         int issuedQuantity = 0);
 
-    // Destructor
-    virtual ~Stock() {}
-
-    // Functions to modify issued quantity
     void increaseIssuedQuantityBy(int increase);
     void decreaseIssuedQuantityBy(int decrease);
-
-    // Determines the best time to buy in the last 30 days
     void bestTimeToBuyLast30Days();
 
     // Getters
@@ -67,6 +60,9 @@ public:
     // Functions to display stock data
     void displayData();
     void displayGraph();
+
+    // Destructor
+    virtual ~Stock() {}
 };
 
 #endif // STOCK_H

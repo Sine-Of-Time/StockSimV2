@@ -12,7 +12,8 @@ private:
     std::vector<User> users;
     bool showStockErrorTicker;
     bool debug = false;
-
+    
+    //Private functions
     double roundToPrecision(double value, int precision) const;
 
 public:
@@ -22,19 +23,17 @@ public:
     // Main functions
     std::vector<std::string> initStock(const std::string tckr) const;
     void displayLine();
-    void miscMenu();
+    void displayLogin();
     void displayMainMenu();
+    void miscMenu();
     void createUser();
     void searchForStock();
     User findUserByUsername(const std::string& userName) const;
     void saveUserData(const User& user, const std::string& filename) const;
-    void displayLogin();
     void wipeFileData(const std::string& filename) const;
     void saveUsers(const std::string& filename) const;
     void loadUsers(const std::string& filename);
     User loadUserData(const std::string& filename) const;
-    const std::vector<User>& getUsers() const;
-    void setUsers(const std::vector<User>& newUsers);
 
     // User Management
     void addUser(const User& user);            // Add a new user
@@ -43,13 +42,13 @@ public:
 
     // Getters
     Stock getStock(const std::string tckr) const;
+    const std::vector<User>& getUsers() const;
 
     // Setters
     void setStockErrorTicker(bool status);
+    void setUsers(const std::vector<User>& newUsers);
 
     // Destructor
     ~Manager();
 };
-
 #endif // MANAGER_H
-

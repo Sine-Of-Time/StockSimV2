@@ -19,7 +19,6 @@ public:
     User(const std::string& username = "", double balance = 0.0);
 
     void adjustBalance();
-    Stock getStockByTicker(const std::string& ticker) const;
     void increaseBalanceBy(int increase);
     void decreaseBalanceBy(int decrease);
     void buyStock(Stock stock, int amountToBuy);
@@ -32,6 +31,7 @@ public:
     int getNetworth() const;
     int getBalance() const; 
     const std::unordered_map<std::string, Stock>& getPortfolio() const;
+    Stock getStockByTicker(const std::string& ticker) const;
 
     // Setters
     void setUsername(const std::string& username);

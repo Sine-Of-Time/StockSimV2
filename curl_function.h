@@ -5,7 +5,6 @@
 
 #include <string>
 #include <json/json.h>
-//using namespace std;
 
 // Declare functions 
 std::string get_price(const std::string& ticker_symbol, const std::string& api);
