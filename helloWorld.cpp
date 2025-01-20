@@ -69,5 +69,8 @@ int main() {
             break;
         }
     } while (choice != 4); 
+
+    man.addUser(user);
+    man.saveUsers(USER_FILE);
     return 0;
 }
