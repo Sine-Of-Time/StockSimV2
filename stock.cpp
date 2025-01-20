@@ -5,8 +5,8 @@
 #include <iostream> // For std::cout and std::endl
 
 // Constructor
-Stock::Stock(const std::string& volume, const std::string& companyName, const std::string& ticker,
-    int64_t timestamp, const std::string& value, const std::string& change,
+Stock::Stock(double volume, const std::string& companyName, const std::string& ticker,
+    int64_t timestamp, double value, const std::string& change,
     const std::string& previousClose, bool up, int issuedQuantity)
     : volume(volume), companyName(companyName), ticker(ticker), timestamp(timestamp),
     value(value), change(change), previousClose(previousClose), up(up), issuedQuantity(issuedQuantity) {
@@ -14,7 +14,6 @@ Stock::Stock(const std::string& volume, const std::string& companyName, const st
 }
 
 // Display data
-
 void Stock::bestTimeToBuyLast30Days() {
     if (history.empty()) {
         std::cout << "No historical data available to determine the best time to buy.\n";
@@ -46,12 +45,11 @@ void Stock::displayData() {
     std::cout << "Change: " << change << std::endl;
     std::cout << "Previous Close: " << previousClose << std::endl;
     std::cout << "Volume: " << volume << std::endl;
-    std::cout << "Issued Quantity: " << issuedQuantity << std::endl;
+    //std::cout << "Issued Quantity: " << issuedQuantity << std::endl;
 }
 
 void Stock::displayGraph() {
     std::vector<double> yValues = getHistory();
-
     if (yValues.empty()) {
         std::cout << "No data available to plot.\n";
         return;
@@ -77,14 +75,9 @@ void Stock::displayGraph() {
     for (double y = maxY; y >= minY; y -= scale) {
         std::cout << std::setw(6) << std::fixed << std::setprecision(1) << y << " |";
         for (int x = 0; x < graphWidth; ++x) {
-            if (yValues[x] >= y && yValues[x] < y + scale) {
-                std::cout << "*"; // Plot point
-            }
-            else {
-                std::cout << " ";
-            }
-        }
-        std::cout << "\n";
+            if (yValues[x] >= y && yValues[x] < y + scale)std::cout << "*"; 
+            else std::cout << " ";
+        }std::cout << "\n";
     }
 
     // X-axis
@@ -93,22 +86,14 @@ void Stock::displayGraph() {
     // X-axis labels
     std::cout << "        "; // Adjusted to shift labels left by one
     for (int x = 0; x < graphWidth; ++x) {
-        if (x % 5 == 0) {
-            std::cout << "|"; // Vertical marker for labeled days
-        }
-        else {
-            std::cout << " ";
-        }
-    }
-    std::cout << "\n";
+        if (x % 5 == 0) std::cout << "|";
+        else std::cout << " ";
+    }std::cout << "\n";
 
     std::cout << "    "; // Adjusted to shift labels left by one
     for (int x = 0; x < graphWidth; ++x) {
-        if (x % 5 == 0) {
-            std::cout << std::setw(5) << x; // Label every 5th day
-        }
-    }
-    std::cout << "\n";
+        if (x % 5 == 0) std::cout << std::setw(5) << x; 
+    }std::cout << "\n";
 }
 
 void Stock::increaseIssuedQuantityBy(int increase) {
@@ -120,7 +105,7 @@ void Stock::decreaseIssuedQuantityBy(int decrease) {
 }
 
 // Getters
-std::string Stock::getVolume() const {
+double Stock::getVolume() const {
     return volume;
 }
 
@@ -136,7 +121,7 @@ int64_t Stock::getTimestamp() const {
     return timestamp;
 }
 
-std::string Stock::getValue() const {
+double Stock::getValue() const {
     return value;
 }
 
@@ -148,12 +133,12 @@ std::string Stock::getPreviousClose() const {
     return previousClose;
 }
 
-int Stock::getIssuedQuantity() const {
-    return issuedQuantity;
+std::vector<double> Stock::getHistory() const {
+    return history;
 }
 
-std::vector<double> Stock::getHistory() {
-    return history;
+int Stock::getIssuedQuantity() const {
+    return issuedQuantity;
 }
 
 void Stock::setHistory() {
@@ -161,7 +146,7 @@ void Stock::setHistory() {
 }
 
 // Setters
-void Stock::setVolume(const std::string& newVolume) {
+void Stock::setVolume(double newVolume) {
     volume = newVolume;
 }
 
@@ -177,7 +162,7 @@ void Stock::setTimestamp(int64_t newTimestamp) {
     timestamp = newTimestamp;
 }
 
-void Stock::setValue(const std::string& newValue) {
+void Stock::setValue(double newValue) {
     value = newValue;
 }
 

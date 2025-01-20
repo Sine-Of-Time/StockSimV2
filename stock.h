@@ -3,66 +3,70 @@
 
 #include <string>
 #include <vector>
-//using namespace std;
+#include <cstdint>
 
 class Stock {
 private:
-    std::string volume;
+    double volume;
     std::string companyName;
     std::string ticker;
     int64_t timestamp;
-    std::string value;
+    double value;
     std::string change;
     std::string previousClose;
     std::vector<double> history;
     int issuedQuantity;
     bool up;
+
+    // Sets the historical stock prices
     void setHistory();
 
 public:
     // Constructor
-    Stock(const std::string& volume = "",
+    Stock(double volume = 0.0,
         const std::string& companyName = "",
         const std::string& ticker = "",
         int64_t timestamp = 0,
-        const std::string& value = "0.0",
+        double value = 0.0,
         const std::string& change = "0.0",
         const std::string& previousClose = "0.0",
         bool up = false,
-        int issuedQuantity = 0); 
+        int issuedQuantity = 0);
 
+    // Destructor
+    virtual ~Stock() {}
+
+    // Functions to modify issued quantity
     void increaseIssuedQuantityBy(int increase);
     void decreaseIssuedQuantityBy(int decrease);
+
+    // Determines the best time to buy in the last 30 days
     void bestTimeToBuyLast30Days();
 
-
     // Getters
-    std::string getVolume() const;
+    double getVolume() const;
     std::string getCompanyName() const;
     std::string getTicker() const;
     int64_t getTimestamp() const;
-    std::string getValue() const;
+    double getValue() const;
     std::string getChange() const;
     std::string getPreviousClose() const;
-    std::vector<double> getHistory();
-    int getIssuedQuantity() const; 
+    std::vector<double> getHistory() const;
+    int getIssuedQuantity() const;
 
     // Setters
-    void setVolume(const std::string& newVolume);
+    void setVolume(double newVolume);
     void setCompanyName(const std::string& newCompanyName);
     void setTicker(const std::string& newTicker);
-    void setTimestamp(int64_t timestamp);
-    void setValue(const std::string& newValue);
+    void setTimestamp(int64_t newTimestamp);
+    void setValue(double newValue);
     void setChange(const std::string& newChange);
     void setPreviousClose(const std::string& newPreviousClose);
-    void setIssuedQuantity(int newIssuedQuantity); 
+    void setIssuedQuantity(int newIssuedQuantity);
 
-    // Display data
+    // Functions to display stock data
     void displayData();
     void displayGraph();
-
-    // Virtual destructor
-    virtual ~Stock() {}
 };
 
 #endif // STOCK_H

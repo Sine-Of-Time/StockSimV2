@@ -4,11 +4,9 @@
 #include <vector>
 #include <iostream>
 #include <json/json.h>
-//#include <iostream>
 
 using namespace Json;
 using namespace std;
-
 
 std::string api = "2c53720136914f2e9a7c3623f965eb14";
 
@@ -33,12 +31,8 @@ std::string fetchTwelveData(const std::string& url) {
         res = curl_easy_perform(curl);
         if (res != CURLE_OK) {
             cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << endl;
-        }
-
-        curl_easy_cleanup(curl);
-    }
-
-    return response;
+        }curl_easy_cleanup(curl);
+    }return response;
 }
 
 
@@ -124,7 +118,6 @@ Value get_stock_quote(const std::string& ticker_symbol) {
         return Value(); // Return an empty JSON value on error
     }
     delete reader;
-
     return root;
 }
 
@@ -149,7 +142,7 @@ std::vector<double> get_stock_prices(const std::string& ticker_symbol) {
     // Perform the HTTP request
     CURLcode res = curl_easy_perform(curl);
     if (res != CURLE_OK) {
-        //std::cerr << "cURL request failed: " << curl_easy_strerror(res) << std::endl;
+        std::cerr << "cURL request failed: " << curl_easy_strerror(res) << std::endl;
         curl_easy_cleanup(curl);
         return {}; // Return an empty vector on error
     }
@@ -164,7 +157,7 @@ std::vector<double> get_stock_prices(const std::string& ticker_symbol) {
 
     std::istringstream sstream(jsonResponse);
     if (!Json::parseFromStream(reader, sstream, &jsonData, &errs)) {
-        //std::cerr << "Failed to parse JSON: " << errs << std::endl;
+        std::cerr << "Failed to parse JSON: " << errs << std::endl;
         return {}; // Return an empty vector on error
     }
 
@@ -173,15 +166,12 @@ std::vector<double> get_stock_prices(const std::string& ticker_symbol) {
     for (const auto& day : jsonData["values"]) {
         double close = std::stod(day["close"].asString());
         closingPrices.push_back(close);
-    }
-
-    return closingPrices; // Return the vector of closing prices
+    }return closingPrices; // Return the vector of closing prices
 }
 
 std::vector<std::string> searchStocksByPrefix(const std::string& prefix, const std::string& apiKey) {
     std::string url = "https://api.twelvedata.com/symbol_search?symbol=" + prefix + "&apikey=" + apiKey;
     std::string response = fetchTwelveData(url);
-
     std::vector<std::string> stockSymbols;
 
     try {
@@ -210,7 +200,5 @@ std::vector<std::string> searchStocksByPrefix(const std::string& prefix, const s
     }
     catch (const std::exception& e) {
         std::cerr << "Error parsing JSON: " << e.what() << std::endl;
-    }
-
-    return stockSymbols;
+    }return stockSymbols;
 }

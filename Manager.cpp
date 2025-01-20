@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <fstream>
 #include "user.h"
+#include <list>
 
 // Constructor
 Manager::Manager() {
@@ -38,9 +39,7 @@ void Manager::createUser() {
 User Manager::findUserByUsername(const std::string& userName) const {
     // Iterate through the users array to find a match
     for (const auto& user : users) {
-        if (user.getUsername() == userName) {
-            return user; // Return the matching user
-        }
+        if (user.getUsername() == userName)return user;
     }
 
     // If no match is found, return a default User object
@@ -88,12 +87,8 @@ void Manager::saveUsers(const std::string& filename) const {
 
     outFile.flush(); // Ensure all data is written to the file
     outFile.close();
-    if (outFile.fail()) {
-        std::cerr << "Error: Failed to properly save data to " << filename << ".\n";
-    }
-    else {
-        std::cout << "All users' data saved to " << filename << ".\n";
-    }
+    if (outFile.fail()) std::cerr << "Error: Failed to properly save data to " << filename << ".\n";
+    else std::cout << "All users' data saved to " << filename << ".\n";
 }
 
 
@@ -123,16 +118,29 @@ void Manager::loadUsers(const std::string& filename) {
         user.setBalance(balance);
 
         for (size_t j = 0; j < portfolioSize; ++j) {
-            std::string companyName, ticker, value;
+            std::string companyName, ticker, valueStr;
             int issuedQuantity;
 
             std::getline(inFile, companyName);
             std::getline(inFile, ticker);
-            std::getline(inFile, value);
+            std::getline(inFile, valueStr);
             inFile >> issuedQuantity;
             inFile.ignore(); // Ignore the newline after issuedQuantity
 
-            Stock stock("", companyName, ticker, 0, value, "", "", false, issuedQuantity);
+            // Convert value to double
+            double value = std::stod(valueStr);
+
+            // Create Stock object with default or placeholder values for missing fields
+            Stock stock(0.0,          // Volume (default)
+                companyName,  // Company Name
+                ticker,       // Ticker
+                0,            // Timestamp (default)
+                value,        // Value
+                "0.0",        // Change (default)
+                "0.0",        // Previous Close (default)
+                false,        // Up (default)
+                issuedQuantity); // Issued Quantity
+
             user.buyStock(stock, issuedQuantity);
         }
 
@@ -191,22 +199,25 @@ User Manager::loadUserData(const std::string& filename) const {
 
     // Read portfolio data
     for (size_t i = 0; i < portfolioSize; ++i) {
-        std::string companyName, ticker, value;
+        std::string companyName, ticker, valueStr;
         int issuedQuantity;
 
         std::getline(inFile, companyName);
         std::getline(inFile, ticker);
-        std::getline(inFile, value);
+        std::getline(inFile, valueStr);
         inFile >> issuedQuantity;
         inFile.ignore(); // Ignore the newline after issuedQuantity
 
-        Stock stock("", companyName, ticker, 0, value, "", "", false, issuedQuantity);
+        // Convert string value to double
+        double value = std::stod(valueStr);
+
+        // Create Stock object with default or placeholder values for missing fields
+        Stock stock(0.0, companyName, ticker, 0, value, "0.0", "0.0", false, issuedQuantity);
+
         user.buyStock(stock, issuedQuantity); // Add the stock to the user's portfolio
-    }
-
-    inFile.close();
+    }inFile.close();
+  
     std::cout << "User data loaded from " << filename << ".\n";
-
     return user;
 }
 
@@ -243,7 +254,7 @@ bool Manager::removeUser(const std::string& username) {
         return false; // User not found
     }
 
-    users.erase(it, users.end()); // Remove user(s)
+    users.erase(it, users.end()); // Remove user(s)11
     std::cout << "User " << username << " removed successfully.\n";
     return true;
 }
@@ -255,54 +266,64 @@ void Manager::searchForStock() {
         std::cout << "Would you like to search for an stock?(exit move on): ";
         std::cin >> userPrefix;
 
-        if (userPrefix == "exit") {
-            break;
-        }
+        if (userPrefix == "exit") break;
 
         // Fetch matching stock symbols
         std::vector<std::string> matches = searchStocksByPrefix(userPrefix, API_KEY);
 
-        if (matches.empty()) {
-            std::cout << "No matches found for prefix '" << userPrefix << "'." << std::endl;
-        }
-        else {
+        if (matches.empty()) std::cout << "No matches found for prefix '" << userPrefix << "'." << std::endl;
+        else{
             std::cout << "Suggestions: ";
             int k = 0;
+            
             setStockErrorTicker(false);
+            std::list<std::string> usedTickerList;
             for (const auto& symbol : matches) {
                 Stock st = getStock(symbol);
-                if (st.getCompanyName().compare("Error") != 0) {
+            
+                auto it = std::find(usedTickerList.begin(), usedTickerList.end(),symbol);
+                if (it != usedTickerList.end()) continue;
+
+                if (st.getVolume() == 0.0)continue;
+                if (st.getCompanyName().compare("Error") != 0 || st.getCompanyName().compare("") != 0) {
                     st.displayData();
                     displayLine();
                 }
-                if (k++ == 15)break;
-            }
-            std::cout << std::endl;
+                usedTickerList.push_back(st.getTicker());
+                if (k++ == 10)break;
+            }std::cout << std::endl;
         }
-    }
-    setStockErrorTicker(true);
+    }setStockErrorTicker(true);
 }
 
 Stock Manager::getStock(const std::string ticker) const {
     std::vector<std::string> tmpStorage = initStock(ticker);
     Json::Value stockData = get_stock_quote(ticker);
-    Stock newStock( // Create a Stock object and push it to the stock stack
-        tmpStorage[1],                  // Name
-        tmpStorage[0],                  // Average Volume
-        tmpStorage[2],                  // Symbol
+
+    if (tmpStorage[1].compare("Error") == 0)return Stock();
+    double tmpVolume = std::stod(tmpStorage[1]);
+    double tmpOpen = std::stod(tmpStorage[3]);
+    tmpVolume = roundToPrecision(tmpVolume, 2);
+    tmpOpen = roundToPrecision(tmpOpen, 2);
+
+    std::string companyName = tmpStorage[1];
+    std::string change = tmpStorage[4];
+    std::string previousClose = tmpStorage[5];
+
+    Stock newStock(tmpVolume,// Volume
+        companyName,         // Company Name
+        tmpStorage[2],       // Ticker
         stockData.get("timestamp", 0).asInt64(), // Timestamp
-        tmpStorage[3],                  // Open
-        tmpStorage[4],                  // Change
-        tmpStorage[5],                  // Previous Close
-        false                           // Assume false for additional flag
-    );
+        tmpOpen,             // Open/Value
+        change,              // Change
+        previousClose,       // Previous Close
+        false,               // Up
+        0);                  // Issued Quantity (default)
     return newStock;
 }
 
 User Manager::getUserByIndex(size_t index) const {
-    if (index >= users.size()) {
-        throw std::out_of_range("Index is out of bounds.");
-    }
+    if (index >= users.size()) throw std::out_of_range("Index is out of bounds.");
     return users[index];
 }
 
