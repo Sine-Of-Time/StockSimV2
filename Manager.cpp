@@ -25,6 +25,11 @@ void Manager::displayLogin() {
     std::cout << "2.Create new user\n";
 }
 
+void Manager::clearUsers() {
+    users.clear(); // Clears all elements from the vector
+    std::cout << "All users have been removed from the manager.\n";
+}
+
 void Manager::createUser() {
     std::string tmpUserName;
     double tmpBalance;
@@ -128,7 +133,14 @@ void Manager::loadUsers(const std::string& filename) {
             inFile.ignore(); // Ignore the newline after issuedQuantity
 
             // Convert value to double
-            double value = std::stod(valueStr);
+            double value = 0.0;
+            try {
+                value = std::stod(valueStr);
+            }
+            catch (const std::exception& e) {
+                std::cout << "Error getting user data\n";
+                return;
+            }
 
             // Create Stock object with default or placeholder values for missing fields
             Stock stock(0.0,          // Volume (default)
@@ -223,8 +235,9 @@ User Manager::loadUserData(const std::string& filename) const {
 
 void Manager::miscMenu() {
     std::cout << "\n=== Misc Menu ===\n";
-    std::cout << "1. Best Time To Buy Stock Last 30 Days\n";
-    std::cout << "2. Exit\n";
+    //std::cout << "1. Best Time To Buy Stock Last 30 Days\n";
+    std::cout << "2. Would you like to flush user data? Will end program \n";
+    std::cout << "3. Exit\n";
     std::cout << "Enter your choice: ";
 }
 
@@ -372,7 +385,8 @@ void Manager::displayMainMenu() {
     std::cout << "1. Search for Stocks\n";
     std::cout << "2. View your Portfolio\n";
     std::cout << "3. View your Info\n";
-    std::cout << "4. Exit\n";
+    std::cout << "4. Misc Menu\n";
+    std::cout << "5. Exit\n";
     std::cout << "Enter your choice: ";
 }
 

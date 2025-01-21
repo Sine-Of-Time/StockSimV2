@@ -15,6 +15,7 @@ int main() {
     std::string userName;
     short choice = 0;
     short choice2 = 0;
+    short miscMenu = 0;
     Manager man;
     User user;
     man.loadUsers(USER_FILE);
@@ -72,13 +73,31 @@ int main() {
             break;
         case 4://Exit
             choice = 4;
+            while (miscMenu != 3) {
+                man.displayLine();
+                man.miscMenu();
+                std::cin >> miscMenu;
+                if (miscMenu == 1) {
+                   
+                }
+                if (miscMenu == 2) {
+                    man.clearUsers();
+                    user = User("", 0);
+                    man.wipeFileData(USER_FILE);
+                    return 0;
+                }
+                man.displayLine();
+            }
+            break;
+        case 5://Exit
+            choice = 5;
             std::cout << "Exiting Program!\n";
             break;
         default:
             std::cout << "Invalid choice. Please try again.\n";
             break;
         }
-    } while (choice != 4); 
+    } while (choice != 5); 
 
     man.addUser(user);
     man.saveUsers(USER_FILE);

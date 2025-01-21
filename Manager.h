@@ -25,6 +25,7 @@ public:
     void displayLine();
     void displayLogin();
     void displayMainMenu();
+    void clearUsers();
     void miscMenu();
     void createUser();
     void searchForStock();
