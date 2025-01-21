@@ -29,11 +29,7 @@ void Stock::bestTimeToBuyLast30Days() {
             minPrice = history[i];
             bestDay = i;
         }
-    }
-
-    // Display the result
-    std::cout << "The best time to buy in the last 30 days was on day " << bestDay
-        << " with a price of $" << minPrice << ".\n";
+    }std::cout << "The best time to buy in the last 30 days was on day " << bestDay << " with a price of $" << minPrice << ".\n";
 }
 
 void Stock::displayData() {
@@ -45,7 +41,6 @@ void Stock::displayData() {
     std::cout << "Change: " << change << std::endl;
     std::cout << "Previous Close: " << previousClose << std::endl;
     std::cout << "Volume: " << volume << std::endl;
-    //std::cout << "Issued Quantity: " << issuedQuantity << std::endl;
 }
 
 void Stock::displayGraph() {

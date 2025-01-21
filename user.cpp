@@ -27,6 +27,18 @@ void User::buyStock(Stock stock,int amountToBuy) { //This is causing issues with
     }
 }
 
+
+void User::calculateNetworth(){
+    networth = balance; // Start with the user's balance
+
+    for (const auto& [ticker, stock] : portfolio) {
+        networth += stock.getValue() * stock.getIssuedQuantity();
+    }
+
+    std::cout << "Net worth has been calculated: $" << networth << "\n";
+}
+
+
 void User::sellStock(std::string ticker,int amountToSell) {
     try {
         Stock stock = portfolio.at(ticker); // Throws an exception
@@ -136,7 +148,8 @@ void User::displayPortfolio() const {
     }
 }
 
-void User::displayUserData() const {
+void User::displayUserData(){
+    calculateNetworth();
     std::cout << "User Information:\n";
     std::cout << "------------------\n";
     std::cout << "Username: " << username << "\n";

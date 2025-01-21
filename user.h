@@ -14,6 +14,9 @@ private:
     double networth;
     bool showMsg = false;
 
+    //Private functions
+    void calculateNetworth();
+
 public:
     // Constructor
     User(const std::string& username = "", double balance = 0.0);
@@ -24,7 +27,7 @@ public:
     void buyStock(Stock stock, int amountToBuy);
     void sellStock(std::string ticker, int amountToSell);
     void displayPortfolio() const;
-    void displayUserData() const;
+    void displayUserData();
     void addStock(const Stock& stock);
 
     // Getters
@@ -39,5 +42,4 @@ public:
     void setNetworth(int networth);
     void setBalance(int balance); 
 };
-
 #endif // USER_H

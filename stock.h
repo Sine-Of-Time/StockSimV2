@@ -64,5 +64,4 @@ public:
     // Destructor
     virtual ~Stock() {}
 };
-
 #endif // STOCK_H
