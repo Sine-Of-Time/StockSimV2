@@ -1,0 +1,85 @@
+The following is an basic summary of the program as of 2/20/25
+
+Overall Purpose
+The StockSim application allows users to:
+
+Create or log in to an account.
+Search for real-time stock data using the Twelve Data API.
+Buy or sell stocks, which updates their personal portfolio.
+View their balances, net worth, and detailed portfolio information.
+Save and load user data (including portfolios) from a file, preserving state between sessions.
+Main Components
+main.cpp
+
+Entry point of the program.
+Loads user data from a file at startup.
+Manages user login and account creation workflow.
+Presents a main menu for searching/buying stocks, viewing portfolios, and adjusting user balance.
+Invokes the Manager class for core operations (e.g., searching for stocks, saving/loading data).
+Exits gracefully by saving the user’s updates back to file.
+Manager Class (manager.h / manager.cpp)
+
+Acts as a central controller for the application’s user-related functionality and API interactions.
+Stores a list of all users in memory and supports:
+Adding, removing, finding, or updating users.
+Searching for stock tickers (via searchStocksByPrefix).
+Fetching detailed stock information (via getStock).
+Saving user data to files and loading user data from them (including each user’s portfolio).
+Provides menu displays (e.g., login menu, main menu, misc menu).
+User Class (user.h / user.cpp)
+
+Represents a single user account in the system.
+Tracks:
+A username.
+A cash balance.
+A net worth (calculated by summing the user’s balance plus the value of all owned stocks).
+A portfolio, stored in an std::unordered_map keyed by ticker symbol, each mapped to a Stock object.
+Supports methods for:
+Buying stocks and adding them to the portfolio (optionally deducting funds from the user’s balance).
+Selling owned stocks (optionally adding proceeds to the user’s balance).
+Adjusting the user’s balance interactively.
+Displaying the user’s portfolio and overall information (username, balance, net worth).
+Stock Class (stock.h / stock.cpp)
+
+Encapsulates data for a single stock: ticker symbol, company name, price (value), volume, and an issued quantity (the number of shares owned by a user, if applicable).
+Optionally fetches historical data (last 30 days) for more advanced operations like finding the best time to buy.
+Offers methods to increase or decrease the issued quantity (used when buying/selling shares).
+curl_function.h / curl_function.cpp
+
+Contains networking functions that interact with the Twelve Data API.
+Uses libcurl to:
+Search for stock tickers by prefix (searchStocksByPrefix).
+Get detailed quotes for a specific ticker (get_stock_quote).
+Fetch a history of daily closing prices (get_stock_prices).
+Retrieve simple price data (get_price).
+Includes helper callbacks (WriteCallback) to handle the raw HTTP responses.
+JsonCpp
+
+The code uses the JsonCpp library to parse JSON responses returned by the Twelve Data API, extracting fields like symbol, name, open, change, previous_close, etc.
+Typical Program Flow
+Startup
+
+The application begins by loading user data (all users and their portfolios) from User.txt.
+Login or Create User
+
+The user is prompted to log in with a username or create a new account if they do not exist.
+Main Menu
+
+Search for Stocks
+Allows the user to enter a partial ticker.
+The Manager calls searchStocksByPrefix(...), shows matching symbols, and then fetches details with getStock(...).
+The user can then buy shares of one of the stocks displayed.
+View Portfolio
+Displays the user’s currently owned stocks, including company name, ticker, share price, and share quantity.
+View User Info
+Shows the user’s balance and net worth.
+Optionally adjusts the user’s balance.
+Misc Menu
+Provides options like wiping file data (thus deleting all users), as well as any other miscellaneous features you might add.
+Exit
+Saves the current user’s (and all users’) data back to the file before closing.
+Key Takeaways
+The code forms a simple stock simulator with user accounts, real-time stock data fetching, basic buy/sell transactions, and persistent storage.
+Libcurl + JsonCpp handle the networking and JSON parsing to integrate data from the Twelve Data API.
+The Manager orchestrates user, file, and stock interactions, while the User and Stock classes encapsulate the logic for portfolio holding and stock data, respectively.
+This structure allows you to easily extend the application with additional features, such as more robust error handling, advanced analytics, or UI enhancements, while keeping core responsibilities (managing users, fetching stock data, storing data) modular and maintainable.
