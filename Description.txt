@@ -78,7 +78,7 @@ Misc Menu
 Provides options like wiping file data (thus deleting all users), as well as any other miscellaneous features you might add.
 Exit
 Saves the current user’s (and all users’) data back to the file before closing.
-Key Takeaways
+---Key Takeaways---
 The code forms a simple stock simulator with user accounts, real-time stock data fetching, basic buy/sell transactions, and persistent storage.
 Libcurl + JsonCpp handle the networking and JSON parsing to integrate data from the Twelve Data API.
 The Manager orchestrates user, file, and stock interactions, while the User and Stock classes encapsulate the logic for portfolio holding and stock data, respectively.
